@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -37,18 +39,18 @@ import android.view.View.OnClickListener;
 
 //#################  Fix the landscape to portrait Bug!! ####################\\
 //#################  Fix the landscape to portrait Bug!! ####################\\
-//#################  Fix the landscape to portrait Bug!! ####################\\
+
 
 public class MainActivity extends ActionBarActivity {
-//abstract HashGeneratorUtils();
+
 HashGeneratorUtils myHashGeneratorUtils = new HashGeneratorUtils();
     Context foo;
 
-//UsbCommunicationManager coms = new UsbCommunicationManager(foo);
+
 
 private Button hashButton;
 private Button imagingBtn;
-//private ExpandableListView expListfh = (ExpandableListView) findViewById(R.id.expList);
+
 
     ArrayList<String> listItems=new ArrayList<String>();
     ArrayAdapter<String> adapter;
@@ -107,34 +109,47 @@ private Button imagingBtn;
              //creating a new object to connect the FindMntDir class to this one
              FindMntDrive mnt = new FindMntDrive();
              ReadFile fh = new ReadFile();
-             //HashArray HashList = new HashArray();
+
              //declaration of string mntDir variable being pulled from FindMntDir
 
              String MntDir = mnt.DirPath;
              String filePath = fh.path;
              //outputs the dir the text field
              TrgtDir.setText("Dir: " + MntDir);
-             //TrgtDir.setText("Dir; " + filePath);
 
-             //DigestFile(result);
-             //HashList.popList();
-             //HashArray();
              List list = new ArrayList();
-             //ReadFile objSample = new ReadFile();
-             //objSample.setNewcompanyid("Any string you want");
-             //expListfh. ;
-
-               // Button ImgBtn = (Button) findViewById(R.id.ImagingBtn);
-                //ImgBtn.setBackgroundColor(Color.GREEN);
-
-             //ReadFromFile RFF = new ReadFromFile();
-             //RFF.isExternalStorageReadable();
-
-             copyFile CopyFile = new copyFile();
 
 
-             CopyFile.run();
+             copyFile CF = new copyFile();
+             CF.run();
+             System.out.println("finished copy");
              // operations to be performed on a background thread
+            ListView FLV;
+            ListAdapter LA;
+            FLV = (ListView)findViewById(R.id.fileListView);
+
+             fileOps fops = new fileOps(MntDir,filePath);
+             fops.getSourceFiles();
+             List<String> SFL = new ArrayList<String>();
+
+             File[] files = fops.getSourceFiles();
+                for( int i = 0; i<files.length; i++)
+             {
+
+                 SFL.add(files[i].toString());
+             }
+
+
+             /*List<String> your_array_list = new ArrayList<String>();
+             your_array_list.add("foo");
+             your_array_list.add("bar");*/
+
+             // This is the array adapter, it takes the context of the activity as a
+             // first parameter, the type of list view as a second parameter and your
+             // array as a third parameter.
+             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.activity_main,SFL);
+
+             FLV.setAdapter(arrayAdapter);
 
 
 
@@ -151,8 +166,8 @@ private Button imagingBtn;
                 public void onClick(View view)
                 {
 
-                    listView done = new listView();
-                    done.run();
+                    //listView done = new listView();
+                    //done.run();
 
 
                     TextView md5hashOutput;
