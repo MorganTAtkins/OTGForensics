@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -98,6 +99,8 @@ private Button imagingBtn;
          public void onClick(View view)
          {
 
+
+
          //declaration of the text view
              TextView TrgtDir;
              TrgtDir = (TextView)findViewById(R.id.TrgtDir);
@@ -128,11 +131,13 @@ private Button imagingBtn;
              //RFF.isExternalStorageReadable();
 
              copyFile CopyFile = new copyFile();
-             try {
-                 copyFile.main();
-             } catch (IOException e) {
-                 e.printStackTrace();
-             }
+
+
+             CopyFile.run();
+             // operations to be performed on a background thread
+
+
+
 
          }
      });
@@ -145,6 +150,11 @@ private Button imagingBtn;
                 @Override
                 public void onClick(View view)
                 {
+
+                    listView done = new listView();
+                    done.run();
+
+
                     TextView md5hashOutput;
                     md5hashOutput = (TextView)findViewById(R.id.md5hashOutput);
 
