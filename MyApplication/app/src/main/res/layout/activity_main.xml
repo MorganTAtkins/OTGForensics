@@ -69,14 +69,24 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="19dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Array Output"
+        android:id="@+id/arrrayOutput"
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/TrgtDir"
+        android:layout_alignEnd="@+id/SHA256HashOutput" />
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fileListView"
-        android:layout_below="@+id/TrgtDir"
-        android:layout_alignParentEnd="true"
-        android:choiceMode="singleChoice"
-        android:nestedScrollingEnabled="false" />
+        android:id="@+id/arrayOutputList"
+        android:layout_below="@+id/arrrayOutput"
+        android:layout_alignStart="@+id/arrrayOutput"
+        android:layout_marginTop="75dp"
+        android:choiceMode="singleChoice" />
 
 </RelativeLayout>
 

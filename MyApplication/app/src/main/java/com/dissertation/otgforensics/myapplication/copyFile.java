@@ -38,7 +38,7 @@ public class copyFile  implements Runnable {
             File sourceFiles[] = source.listFiles();
             for (int i = 0; i < sourceFiles.length; i++) {
                 String fileName = sourceFiles[i].getName();
-                System.out.println("file path: " + sourceFiles[i].toString());
+                //System.out.println("file path: " + sourceFiles[i].toString());
                 // new Thread(new Runnable() {
                 try {
                     copyFileUsingStream(sourceFiles[i], dest, fileName);

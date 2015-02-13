@@ -112,7 +112,7 @@ private Button imagingBtn;
 
              //declaration of string mntDir variable being pulled from FindMntDir
 
-             String MntDir = mnt.DirPath;
+             String MntDir = mnt.DirPath + "/Download/";
              String filePath = "/storage/emulated/0/dest/";
              //outputs the dir the text field
              TrgtDir.setText("Dir: " + MntDir);
@@ -124,9 +124,12 @@ private Button imagingBtn;
              CF.run();
              System.out.println("finished copy");
              // operations to be performed on a background thread
-            TextView FLV;
-            //ListAdapter LA;
-            FLV = (TextView)findViewById(R.id.fileListView);
+             ListView AOL;
+             //ListAdapter LA;
+             AOL = (ListView)findViewById(R.id.arrayOutputList);
+
+             //String DestinationFile = (dest.toString() + "/" + sourceFilename);
+
              System.out.println("from = " + MntDir);
              System.out.println("to = " + filePath);
 
@@ -135,15 +138,23 @@ private Button imagingBtn;
              //String to = "/storage/emulated/0/dest/";
              //fops.fileOps();
              //fops.getSourceFiles();
-             List<String> SFL = new ArrayList<>();
+             ArrayList<String> SFL = new ArrayList<String>();
 
+             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.layout);
+
+             arrayAdapter.add("foo");
+             ListAdapter LA = arrayAdapter;
              File[] files = fops.getSourceFiles();
                 for( int i = 0; i<files.length; i++)
              {
 
                  SFL.add(files[i].toString());
-             }
+                 System.out.println("files "+ i +" "+ files[i].toString());
+                 arrayAdapter.add(files[i].toString());
 
+             }
+             //arrayAdapter.add(SFL);
+             AOL.setAdapter(LA);
 
              /*List<String> your_array_list = new ArrayList<String>();
              your_array_list.add("foo");
@@ -152,14 +163,13 @@ private Button imagingBtn;
              // This is the array adapter, it takes the context of the activity as a
              // first parameter, the type of list view as a second parameter and your
              // array as a third parameter.
-             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getBaseContext(),R.layout.activity_main,SFL);
+
 
              //FLV.setAdapter(arrayAdapter);
              //FLV.set
-             System.out.println("starting to print array");
-             for(int i=0; i<=FLV.length(); i++){
-                 FLV.setText("item "+ i + " " + SFL.get(i));   //prints all strings in the array
-                 }
+             System.out.println("break here #######");
+
+
 
 
 
