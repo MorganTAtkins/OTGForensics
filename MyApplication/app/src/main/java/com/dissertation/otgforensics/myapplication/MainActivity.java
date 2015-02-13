@@ -113,7 +113,7 @@ private Button imagingBtn;
              //declaration of string mntDir variable being pulled from FindMntDir
 
              String MntDir = mnt.DirPath;
-             String filePath = fh.path;
+             String filePath = "/storage/emulated/0/dest/";
              //outputs the dir the text field
              TrgtDir.setText("Dir: " + MntDir);
 
@@ -124,13 +124,18 @@ private Button imagingBtn;
              CF.run();
              System.out.println("finished copy");
              // operations to be performed on a background thread
-            ListView FLV;
-            ListAdapter LA;
-            FLV = (ListView)findViewById(R.id.fileListView);
+            TextView FLV;
+            //ListAdapter LA;
+            FLV = (TextView)findViewById(R.id.fileListView);
+             System.out.println("from = " + MntDir);
+             System.out.println("to = " + filePath);
 
              fileOps fops = new fileOps(MntDir,filePath);
-             fops.getSourceFiles();
-             List<String> SFL = new ArrayList<String>();
+             //String from = "/storage/emulated/0/Download/";
+             //String to = "/storage/emulated/0/dest/";
+             //fops.fileOps();
+             //fops.getSourceFiles();
+             List<String> SFL = new ArrayList<>();
 
              File[] files = fops.getSourceFiles();
                 for( int i = 0; i<files.length; i++)
@@ -147,9 +152,14 @@ private Button imagingBtn;
              // This is the array adapter, it takes the context of the activity as a
              // first parameter, the type of list view as a second parameter and your
              // array as a third parameter.
-             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.activity_main,SFL);
+             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getBaseContext(),R.layout.activity_main,SFL);
 
-             FLV.setAdapter(arrayAdapter);
+             //FLV.setAdapter(arrayAdapter);
+             //FLV.set
+             System.out.println("starting to print array");
+             for(int i=0; i<=FLV.length(); i++){
+                 FLV.setText("item "+ i + " " + SFL.get(i));   //prints all strings in the array
+                 }
 
 
 

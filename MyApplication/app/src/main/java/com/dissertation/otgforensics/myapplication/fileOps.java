@@ -15,10 +15,13 @@ public class fileOps {
     public File dest = null;
     public File[] sourceFileList;
 
+    //public String from = "/storage/emulated/0/Download/";//
+    //public String  to = "/storage/emulated/0/dest/";//
+
     public fileOps(String from ,String to)
     {
-        source = new File("/storage/emulated/0/Download/");//declaration of the source dir
-        dest = new File("/storage/emulated/0/dest/");// constructor for the destination
+        source = new File(from);//declaration of the source dir
+        dest = new File(to);// constructor for the destination
 
     }
     public File[] getSourceFiles()
