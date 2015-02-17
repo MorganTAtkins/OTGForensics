@@ -1,7 +1,9 @@
 package com.dissertation.otgforensics.myapplication;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Environment;
 import android.provider.Settings;
@@ -36,6 +38,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 //#################  Fix the landscape to portrait Bug!! ####################\\
 //#################  Fix the landscape to portrait Bug!! ####################\\
@@ -190,8 +193,9 @@ private Button imagingBtn;
                     //done.run();
                     fileChooser FC = new fileChooser();
                     //FC.loadFileList();
-                    System.out.println("start of FC");
-                    FC.onCreateDialog(getBundle);
+                    System.out.println("start of popup call");
+                    FC.Dialog();
+
 
 
 
