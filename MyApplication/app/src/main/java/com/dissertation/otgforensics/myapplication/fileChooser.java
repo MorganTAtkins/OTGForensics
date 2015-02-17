@@ -4,10 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.Environment;
-import android.renderscript.Script;
-import android.util.Log;
+
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,10 +18,10 @@ import java.io.FilenameFilter;
 public class fileChooser extends MainActivity {
      public void Dialog(){
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-
+        //Dialog dialog = new Dialog(this);
         // Setting Dialog Title
         alertDialog.setTitle("Select source Dir");
-
+        //dialog.setTitle("Select source Dir");
         // Setting Dialog Message
         alertDialog.setMessage("Fire zee missiles");
 
@@ -46,6 +43,6 @@ public class fileChooser extends MainActivity {
 
         // Showing Alert Message
          alertDialog.show();
-        //return
+
     }
 }
