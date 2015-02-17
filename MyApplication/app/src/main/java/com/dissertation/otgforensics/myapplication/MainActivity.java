@@ -2,6 +2,7 @@ package com.dissertation.otgforensics.myapplication;
 
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -14,9 +15,11 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,6 +56,7 @@ HashGeneratorUtils myHashGeneratorUtils = new HashGeneratorUtils();
 
 private Button hashButton;
 private Button imagingBtn;
+public  String customDir;
 
 
     ArrayList<String> listItems=new ArrayList<String>();
@@ -66,6 +70,10 @@ private Button imagingBtn;
             Button ImgBtn = (Button) findViewById(R.id.ImagingBtn);
             ImgBtn.setBackgroundColor(Color.GREEN);
             return true;
+        }
+        else {
+            Dialog("Attention","Please input source destination","false");
+
         }
         //######
         // change icon or text label to indicate status
@@ -87,15 +95,11 @@ private Button imagingBtn;
 
             addListenerOnButton();
             isExternalStorageReadable();
-
-
-
-
-        }
+}
 
  public void addListenerOnButton() {
 
-       //Select a specific button to bundle it with the action you want
+       //Select a specific button to link to an action
      imagingBtn = (Button) findViewById(R.id.ImagingBtn);
 
      imagingBtn.setOnClickListener(new OnClickListener()
@@ -103,10 +107,7 @@ private Button imagingBtn;
          @Override
          public void onClick(View view)
          {
-
-
-
-         //declaration of the text view
+             //declaration of the text view
              TextView TrgtDir;
              TrgtDir = (TextView)findViewById(R.id.TrgtDir);
              //creating a new object to connect the FindMntDir class to this one
@@ -193,11 +194,14 @@ private Button imagingBtn;
                     //done.run();
                     fileChooser FC = new fileChooser();
                     //FC.loadFileList();
-                    System.out.println("start of popup call");
-                    FC.Dialog();
+                    System.out.println("start of FC");
 
 
 
+
+
+                    System.out.println("Call FC.Dialog()");
+                    Dialog("Source Directory","Please input source destination","true");
 
                     TextView md5hashOutput;
                     md5hashOutput = (TextView)findViewById(R.id.md5hashOutput);
@@ -344,6 +348,40 @@ private Button imagingBtn;
     public void ImagingBtn(View v)
     {
 
+
+    }
+
+public void Dialog (String Title,String Message,String txtNeed){
+    // creates alertDialog box based on the main activity context
+    AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+
+    // Setting Dialog Title
+    alertDialog.setTitle(Title);
+
+    // Setting Dialog Message
+    alertDialog.setMessage(Message);
+    final EditText input = new EditText(getBaseContext());// setting the text box for user input
+                alertDialog.setView(input);
+    if (txtNeed == "false"){
+
+    }else
+    {
+        // Setting OK Button
+        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Write your code here to execute after dialog closed
+                Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                // debugging
+                System.out.println("user input = " + input.getText().toString());
+                //take the user input and applies it to the customDir Variable
+                customDir = input.getText().toString();
+                // debugging
+                System.out.println("customDir = " + customDir);
+            }
+        });}
+
+    // Showing Alert Message
+    alertDialog.show();
 
     }
 }
