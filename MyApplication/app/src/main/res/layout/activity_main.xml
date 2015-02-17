@@ -29,7 +29,8 @@
             android:text="MD5 HASH"
             android:id="@+id/md5hashOutput"
             android:layout_below="@+id/md5button"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
 
         <Button
             android:layout_width="wrap_content"
@@ -49,7 +50,8 @@
             android:id="@+id/SHA1HashOutput"
             android:layout_below="@+id/md5hashOutput"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="17dp" />
+            android:layout_marginTop="17dp"
+            android:visibility="invisible" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,7 +60,8 @@
             android:id="@+id/SHA256HashOutput"
             android:layout_marginTop="17dp"
             android:layout_below="@+id/SHA1HashOutput"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,24 +72,13 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="19dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Array Output"
-        android:id="@+id/arrrayOutput"
-        android:layout_marginTop="41dp"
-        android:layout_below="@+id/TrgtDir"
-        android:layout_alignEnd="@+id/SHA256HashOutput" />
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/arrayOutputList"
-        android:layout_below="@+id/arrrayOutput"
-        android:layout_alignStart="@+id/arrrayOutput"
         android:layout_marginTop="75dp"
-        android:choiceMode="singleChoice" />
+        android:choiceMode="singleChoice"
+        android:layout_below="@+id/TrgtDir" />
 
 </RelativeLayout>
 

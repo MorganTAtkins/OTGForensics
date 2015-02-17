@@ -122,13 +122,13 @@ public class copyFile  implements Runnable {
                         //md5hashOutput.setText("MD5 Hash: " + md5Hash);
                         System.out.println("md5 " + md5Hash);
 
-                        String sha1Hash = HashGeneratorUtils.generateSHA1(source);
+                        //String sha1Hash = HashGeneratorUtils.generateSHA1(source);
                         //SHA1HashOutput.setText("SHA-1 Hash: " + sha1Hash);
-                        System.out.println("sha1 " + sha1Hash);
+                        //System.out.println("sha1 " + sha1Hash);
 
-                        String sha256Hash = HashGeneratorUtils.generateSHA256(source);
+                        //String sha256Hash = HashGeneratorUtils.generateSHA256(source);
                         //SHA256HashOutput.setText("SHA-256 Hash: " + sha256Hash);
-                        System.out.println("sha256 " + sha256Hash);
+                        //System.out.println("sha256 " + sha256Hash);
 
                         //public String md5Hasha = md5Hash;
                     }

@@ -142,14 +142,14 @@ private Button imagingBtn;
 
              ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.layout);
 
-             arrayAdapter.add("foo");
+             //arrayAdapter.add("foo");
              ListAdapter LA = arrayAdapter;
              File[] files = fops.getSourceFiles();
                 for( int i = 0; i<files.length; i++)
              {
 
                  SFL.add(files[i].toString());
-                 System.out.println("files "+ i +" "+ files[i].toString());
+                 System.out.println("files " + +i + " " + files[i].toString());
                  arrayAdapter.add(files[i].toString());
 
              }
@@ -188,6 +188,11 @@ private Button imagingBtn;
 
                     //listView done = new listView();
                     //done.run();
+                    fileChooser FC = new fileChooser();
+                    //FC.loadFileList();
+                    System.out.println("start of FC");
+                    FC.onCreateDialog(getBundle);
+
 
 
                     TextView md5hashOutput;
