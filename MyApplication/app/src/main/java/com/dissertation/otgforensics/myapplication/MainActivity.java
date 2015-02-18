@@ -56,7 +56,11 @@ HashGeneratorUtils myHashGeneratorUtils = new HashGeneratorUtils();
 
 private Button hashButton;
 private Button imagingBtn;
+private Button dirContent;
+private Button dirSelector;
 public  String customDir;
+public  String MntDir;
+public  String filePath = "/storage/emulated/0/dest/";
 
 
     ArrayList<String> listItems=new ArrayList<String>();
@@ -69,11 +73,20 @@ public  String customDir;
 
             Button ImgBtn = (Button) findViewById(R.id.ImagingBtn);
             ImgBtn.setBackgroundColor(Color.GREEN);
+            MntDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            System.out.println("state = "+MntDir);
+
+            //declaration of the text view and linking it the Trgtdir variable
+            TextView TrgtDir = (TextView)findViewById(R.id.TrgtDir);
+            //outputs the dir the text field
+            TrgtDir.setText("Directory: " + MntDir);
+
+            imagingBtn.setEnabled(false);
             return true;
         }
         else {
             Dialog("Attention","Please input source destination","false");
-
+            return false;
         }
         //######
         // change icon or text label to indicate status
@@ -83,7 +96,7 @@ public  String customDir;
 
 
 
-        return false;
+
 
     }
 
@@ -99,6 +112,21 @@ public  String customDir;
 
  public void addListenerOnButton() {
 
+     dirSelector = (Button) findViewById(R.id.dirSelector);
+
+     dirSelector.setOnClickListener(new OnClickListener()
+     {
+         @Override
+         public void onClick(View view)
+         {
+             System.out.println("Call FC.Dialog()");
+             Dialog("Please input source destination",MntDir.toString(),"true");
+             imagingBtn.setEnabled(true);
+         }
+     });
+
+
+
        //Select a specific button to link to an action
      imagingBtn = (Button) findViewById(R.id.ImagingBtn);
 
@@ -107,82 +135,70 @@ public  String customDir;
          @Override
          public void onClick(View view)
          {
-             //declaration of the text view
-             TextView TrgtDir;
-             TrgtDir = (TextView)findViewById(R.id.TrgtDir);
+
              //creating a new object to connect the FindMntDir class to this one
-             FindMntDrive mnt = new FindMntDrive();
-             ReadFile fh = new ReadFile();
-
-             //declaration of string mntDir variable being pulled from FindMntDir
-
-             String MntDir = mnt.DirPath + "/Download/";
-             String filePath = "/storage/emulated/0/dest/";
-             //outputs the dir the text field
-             TrgtDir.setText("Dir: " + MntDir);
-
-             List list = new ArrayList();
+             //FindMntDrive mnt = new FindMntDrive();
+             //ReadFile fh = new ReadFile();
+             //MntDir = mnt.DirPath + "/Download/";
+             //filePath = "/storage/emulated/0/dest/";
 
 
-             copyFile CF = new copyFile();
-             CF.run();
-             System.out.println("finished copy");
-             // operations to be performed on a background thread
-             ListView AOL;
-             //ListAdapter LA;
-             AOL = (ListView)findViewById(R.id.arrayOutputList);
 
              //String DestinationFile = (dest.toString() + "/" + sourceFilename);
 
              System.out.println("from = " + MntDir);
              System.out.println("to = " + filePath);
+             // operations to be performed on a background thread
 
-             fileOps fops = new fileOps(MntDir,filePath);
-             //String from = "/storage/emulated/0/Download/";
-             //String to = "/storage/emulated/0/dest/";
-             //fops.fileOps();
-             //fops.getSourceFiles();
-             ArrayList<String> SFL = new ArrayList<String>();
-
-             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.layout);
-
-             //arrayAdapter.add("foo");
-             ListAdapter LA = arrayAdapter;
-             File[] files = fops.getSourceFiles();
-                for( int i = 0; i<files.length; i++)
-             {
-
-                 SFL.add(files[i].toString());
-                 System.out.println("files " + +i + " " + files[i].toString());
-                 arrayAdapter.add(files[i].toString());
-
-             }
-             //arrayAdapter.add(SFL);
-             AOL.setAdapter(LA);
-
-             /*List<String> your_array_list = new ArrayList<String>();
-             your_array_list.add("foo");
-             your_array_list.add("bar");*/
-
-             // This is the array adapter, it takes the context of the activity as a
-             // first parameter, the type of list view as a second parameter and your
-             // array as a third parameter.
-
-
-             //FLV.setAdapter(arrayAdapter);
-             //FLV.set
-             System.out.println("break here #######");
-
-
+             copyFile CF = new copyFile();
+             CF.run();
 
 
 
 
          }
      });
+     dirContent = (Button) findViewById(R.id.dirContent);
+
+     dirContent.setOnClickListener(new OnClickListener(){
+         @Override
+         public void onClick(View view)
+         {
+             ListView AOL;
+             //ListAdapter LA;
+             AOL = (ListView)findViewById(R.id.arrayOutputList);
+
+             //create a new instance of the file ops class
+             fileOps fops = new fileOps(MntDir,filePath);
+             //create an array list with SFL as name
+             ArrayList<String> SFL = new ArrayList<String>();
+             //create the array adaptor for passing data to the list view
+             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.layout);
+             //create a list adaptor from the array adaptor (in place as a work around)
+             ListAdapter LA = arrayAdapter;
+             //create a file array from the contents of the source dir
+             File[] files = fops.getSourceFiles();
+             //for each file in the files array do the actions
+             for( int i = 0; i<files.length; i++)
+             {//actions to be done on each of the files in the files array
+                 //adding the file names to the SFL array
+                 SFL.add(files[i].toString());
+                 //debugging
+                 System.out.println("files " + +i + " " + files[i].toString());
+                 //adding each of the files to the array adaptor
+                 arrayAdapter.add(files[i].toString());
+             }
+             // popularing the list view with LA list array
+             AOL.setAdapter(LA);
+             //debugging
+             System.out.println("break here #######");
+         }
+     });
+
+
+
 
      hashButton = (Button) findViewById(R.id.md5button);
-
      hashButton.setOnClickListener(new OnClickListener()
      {
 
@@ -200,8 +216,7 @@ public  String customDir;
 
 
 
-                    System.out.println("Call FC.Dialog()");
-                    Dialog("Source Directory","Please input source destination","true");
+
 
                     TextView md5hashOutput;
                     md5hashOutput = (TextView)findViewById(R.id.md5hashOutput);
@@ -360,28 +375,40 @@ public void Dialog (String Title,String Message,String txtNeed){
 
     // Setting Dialog Message
     alertDialog.setMessage(Message);
-    final EditText input = new EditText(getBaseContext());// setting the text box for user input
+    // setting the text box for user input
+    final EditText input = new EditText(getBaseContext());
                 alertDialog.setView(input);
     if (txtNeed == "false"){
 
     }else
     {
         // Setting OK Button
-        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // Write your code here to execute after dialog closed
                 Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                 // debugging
                 System.out.println("user input = " + input.getText().toString());
                 //take the user input and applies it to the customDir Variable
-                customDir = input.getText().toString();
+                MntDir = MntDir.toString()+input.getText().toString();
+                //declaration of the text view and linking it the Trgtdir variable
+                TextView TrgtDir = (TextView)findViewById(R.id.TrgtDir);
+                //outputs the dir the text field
+                TrgtDir.setText("Directory: " + MntDir);
                 // debugging
-                System.out.println("customDir = " + customDir);
+                System.out.println("customDir = " + MntDir);
             }
-        });}
+        });
+        alertDialog.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                MntDir = " ";
+            }
+        });
+    }
 
     // Showing Alert Message
     alertDialog.show();
 
     }
+
 }

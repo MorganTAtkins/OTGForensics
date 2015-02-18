@@ -37,6 +37,7 @@ public class fileChooser extends MainActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // Write your code here to execute after dialog closed
                 Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                MntDir = input.getText().toString();
             }
         });
 

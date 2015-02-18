@@ -17,16 +17,23 @@ package com.dissertation.otgforensics.myapplication;
 
 
 
-public class copyFile  implements Runnable {
-@Override
-    public void run() {
-        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-        FindMntDrive mnt = new FindMntDrive();
-        String MntDir = mnt.DirPath;
+public class copyFile extends MainActivity implements Runnable{
 
 
-        File source = new File("/storage/emulated/0/Download/");//declaration of the source dir
+    public void run(){
+
+        //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+
+        //FindMntDrive mnt = new FindMntDrive();
+
+         MntDir = "/storage/emulated/0/Download/";
+        //declaration of the source dir
+
+        //System.out.println(MntDir);
+
+
+        File source = new File(MntDir);
 
         File dest = new File("/storage/emulated/0/dest/");// constructor for the destination
 
@@ -62,6 +69,7 @@ public class copyFile  implements Runnable {
 
 
     }
+
 
     //using streams to copy files (http://www.journaldev.com/861/4-ways-to-copy-file-in-java)
     private static void copyFileUsingStream(File source, File dest, String sourceFilename) throws IOException {
@@ -142,4 +150,5 @@ public class copyFile  implements Runnable {
         }
         is.close();
     }
+
 }
