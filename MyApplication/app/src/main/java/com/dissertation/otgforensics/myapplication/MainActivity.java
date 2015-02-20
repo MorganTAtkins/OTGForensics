@@ -110,6 +110,7 @@ public  String filePath = "/storage/emulated/0/dest/";
 
             addListenerOnButton();
             isExternalStorageReadable();
+            Dialog("Warning","Lock device to portrait!","false");
 
 
 }
@@ -352,15 +353,18 @@ public void Dialog (String Title,String Message,String txtNeed){
     // Setting Dialog Title
     alertDialog.setTitle(Title);
 
+
     // Setting Dialog Message
     alertDialog.setMessage(Message);
     // setting the text box for user input
-    final EditText input = new EditText(getBaseContext());
-                alertDialog.setView(input);
+
     if (txtNeed == "false"){
 
     }else
     {
+        final EditText input = new EditText(getBaseContext());
+        alertDialog.setView(input);
+        input.setTextColor(Color.BLACK);
         // Setting OK Button
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -373,6 +377,7 @@ public void Dialog (String Title,String Message,String txtNeed){
                 //declaration of the text view and linking it the Trgtdir variable
                 TextView TrgtDir = (TextView)findViewById(R.id.TrgtDir);
                 //outputs the dir the text field
+
                 TrgtDir.setText("Directory: " + MntDir);
                 // debugging
                 System.out.println("customDir = " + MntDir);
