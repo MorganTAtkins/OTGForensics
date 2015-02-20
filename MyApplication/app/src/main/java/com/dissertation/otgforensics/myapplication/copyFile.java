@@ -3,6 +3,7 @@ package com.dissertation.otgforensics.myapplication;
 
         import android.graphics.Path;
         import android.os.*;
+        import android.widget.Switch;
         import android.widget.TextView;
 
         import java.io.BufferedOutputStream;
@@ -13,27 +14,26 @@ package com.dissertation.otgforensics.myapplication;
         import java.io.IOException;
         import java.io.InputStream;
         import java.io.OutputStream;
+        import java.net.URL;
 
 
+public class copyFile extends AsyncTask<String,String,String>{
 
 
-
-public class copyFile extends MainActivity implements Runnable{
-
-
-    public void run(){
-
+    protected String doInBackground(String... strings){
+        Looper.prepare();
         //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
         //FindMntDrive mnt = new FindMntDrive();
+        MainActivity mA = new MainActivity();
 
-         MntDir = "/storage/emulated/0/Download/";
+         mA.MntDir = "/storage/emulated/0/Download/";
         //declaration of the source dir
 
         //System.out.println(MntDir);
 
 
-        File source = new File(MntDir);
+        File source = new File(mA.MntDir);
 
         File dest = new File("/storage/emulated/0/dest/");// constructor for the destination
 
@@ -50,6 +50,7 @@ public class copyFile extends MainActivity implements Runnable{
                 try {
                     copyFileUsingStream(sourceFiles[i], dest, fileName);
                 }catch (IOException e) {
+                    System.out.println("it done goofed");
                     e.printStackTrace();
                 }
 
@@ -67,14 +68,24 @@ public class copyFile extends MainActivity implements Runnable{
         //copyFileUsingStream(source, dest);
         System.out.println("Time taken by Stream Copy = " + (System.nanoTime() - start));
 
+        return source.listFiles().toString();
+    }
 
+    protected void onProgressUpdate(Integer... progress) {
+       //setProgressPercent(progress[0]);
+    }
+
+    protected void onPostExecute(Long result) {
+        //showDialog("Downloaded " + result + " bytes");
     }
 
 
-    //using streams to copy files (http://www.journaldev.com/861/4-ways-to-copy-file-in-java)
-    private static void copyFileUsingStream(File source, File dest, String sourceFilename) throws IOException {
 
-        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+
+    //using streams to copy files (http://www.journaldev.com/861/4-ways-to-copy-file-in-java)
+    public static void copyFileUsingStream(File source, File dest, String sourceFilename) throws IOException {
+
+        //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         //InputStream is = null;
         //OutputStream os = null;
         //try {
@@ -86,13 +97,15 @@ public class copyFile extends MainActivity implements Runnable{
         System.out.println("Destination file name " + DestinationFile);
         if (source.isDirectory())
         {
-            if (!dest.exists() && !dest.mkdirs()) {
+            if (!dest.exists() && !dest.mkdirs())
+                {
                 throw new IOException("Cannot create dir " + dest.getAbsolutePath());
-            }
+                }
 
             String[] children = source.list();
             for (int i=0; i<children.length; i++)
             {
+                System.out.println("recursive call "+ i);
                 copyFileUsingStream(new File(source, children[i]),new File(dest, children[i]),sourceFilename);
             }
         } else
@@ -115,7 +128,7 @@ public class copyFile extends MainActivity implements Runnable{
                 {
                     out.write(buffer, 0, length);
                     ////
-                    // generate has for each file
+                    // generate hash for each file
                 }
 
             } catch (IOException e)

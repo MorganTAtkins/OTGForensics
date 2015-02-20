@@ -1,15 +1,19 @@
 package com.dissertation.otgforensics.myapplication;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Environment;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
 import android.view.View;
@@ -33,6 +37,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Handler;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -47,7 +52,7 @@ import android.widget.Toast;
 //#################  Fix the landscape to portrait Bug!! ####################\\
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
 HashGeneratorUtils myHashGeneratorUtils = new HashGeneratorUtils();
     Context foo;
@@ -58,9 +63,11 @@ private Button hashButton;
 private Button imagingBtn;
 private Button dirContent;
 private Button dirSelector;
+
 public  String customDir;
 public  String MntDir;
 public  String filePath = "/storage/emulated/0/dest/";
+
 
 
     ArrayList<String> listItems=new ArrayList<String>();
@@ -93,12 +100,7 @@ public  String filePath = "/storage/emulated/0/dest/";
         //colour circle == green
         //colour circle if red by default
         //######
-
-
-
-
-
-    }
+        }
 
     @Override
  public void onCreate(Bundle savedInstanceState)
@@ -108,8 +110,26 @@ public  String filePath = "/storage/emulated/0/dest/";
 
             addListenerOnButton();
             isExternalStorageReadable();
-}
 
+
+}
+    final Handler mHandler = new Handler(){
+
+        public void handleMessage(Message msg) {
+            Bundle b;
+            if(msg.what==1){
+
+                b=msg.getData();
+
+                //log the data received
+                Log.d("data key 1", String.valueOf(b.getInt("k1")));
+                Log.d("data key 2", String.valueOf(b.getInt("k2")));
+                Log.d("data key 3", String.valueOf(b.getInt("k3")));
+
+            }
+            super.handleMessage(msg);
+        }
+    };
  public void addListenerOnButton() {
 
      dirSelector = (Button) findViewById(R.id.dirSelector);
@@ -151,11 +171,9 @@ public  String filePath = "/storage/emulated/0/dest/";
              // operations to be performed on a background thread
 
              copyFile CF = new copyFile();
-             CF.run();
+             //CF.run();
 
-
-
-
+             new copyFile().execute();
          }
      });
      dirContent = (Button) findViewById(R.id.dirContent);
@@ -205,48 +223,9 @@ public  String filePath = "/storage/emulated/0/dest/";
                 @Override
                 public void onClick(View view)
                 {
-
-                    //listView done = new listView();
-                    //done.run();
                     fileChooser FC = new fileChooser();
                     //FC.loadFileList();
                     System.out.println("start of FC");
-
-
-
-
-
-
-
-                    TextView md5hashOutput;
-                    md5hashOutput = (TextView)findViewById(R.id.md5hashOutput);
-
-                    TextView SHA256HashOutput;
-                    SHA256HashOutput = (TextView)findViewById(R.id.SHA256HashOutput);
-
-                    TextView SHA1HashOutput;
-                    SHA1HashOutput = (TextView)findViewById(R.id.SHA1HashOutput);
-
-                    String inputString = "hex string of file ";
-
-                    try {
-                    String md5Hash = HashGeneratorUtils.generateMD5(inputString);
-                    md5hashOutput.setText("MD5 Hash: " + md5Hash);
-
-                    String sha1Hash = HashGeneratorUtils.generateSHA1(inputString);
-                    SHA1HashOutput.setText("SHA-1 Hash: " + sha1Hash);
-
-                    String sha256Hash = HashGeneratorUtils.generateSHA256(inputString);
-                    SHA256HashOutput.setText("SHA-256 Hash: " + sha256Hash);
-
-                    //public String md5Hasha = md5Hash;
-                }
-                catch (HashGenerationException ex)
-                    {
-                        ex.printStackTrace();
-                    }
-
-
                 }
 
      });
