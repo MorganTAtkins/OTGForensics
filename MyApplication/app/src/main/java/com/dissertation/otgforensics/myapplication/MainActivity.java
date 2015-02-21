@@ -63,12 +63,12 @@ private Button hashButton;
 private Button imagingBtn;
 private Button dirContent;
 private Button dirSelector;
+private Button copyKill;
+private volatile boolean running = true;
 
 public  String customDir;
-public  String MntDir = "/sdcard/usbStorage/sda1/";
+public  String MntDir = "/sdcard/usbStorage/";
 public  String filePath = "/storage/emulated/0/dest/";
-
-
 
 
     /* Checks if external storage is available to at least read */
@@ -80,7 +80,7 @@ public  String filePath = "/storage/emulated/0/dest/";
             Button ImgBtn = (Button) findViewById(R.id.ImagingBtn);
             ImgBtn.setBackgroundColor(Color.GREEN);
             //MntDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-            System.out.println("state = "+MntDir);
+            System.out.println("External Storage Dir = "+MntDir);
 
             //declaration of the text view and linking it the Trgtdir variable
             TextView TrgtDir = (TextView)findViewById(R.id.TrgtDir);
@@ -109,7 +109,7 @@ public  String filePath = "/storage/emulated/0/dest/";
 
             addListenerOnButton();
             isExternalStorageReadable();
-            Dialog("Warning","Lock device to portrait!","false");
+            Dialog("Warning", "Lock device to portrait!", "false");
 
 
 }
@@ -139,29 +139,36 @@ public  String filePath = "/storage/emulated/0/dest/";
          @Override
          public void onClick(View view)
          {
-
-             //creating a new object to connect the FindMntDir class to this one
-             //FindMntDrive mnt = new FindMntDrive();
-             //ReadFile fh = new ReadFile();
-             //MntDir = mnt.DirPath + "/Download/";
-             //filePath = "/storage/emulated/0/dest/";
-
-
-
-             //String DestinationFile = (dest.toString() + "/" + sourceFilename);
-
              System.out.println("from = " + MntDir);
              System.out.println("to = " + filePath);
              // operations to be performed on a background thread
 
              copyFile CF = new copyFile();
              //CF.run();
+             //copyFile will run as long as running == true
+             while (running) {
+                 try {
+                     new copyFile().execute();
+                 } catch (Exception e) {
+                     System.out.println("Exception");
+                     running = false;
+                 }
+             }
 
-             new copyFile().execute();
          }
      });
-     dirContent = (Button) findViewById(R.id.dirContent);
+     copyKill = (Button) findViewById(R.id.copyKillSwitch);
+     copyKill.setOnClickListener(new OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             running = false;
+         }
+     });
 
+
+
+
+     dirContent = (Button) findViewById(R.id.dirContent);
      dirContent.setOnClickListener(new OnClickListener(){
          @Override
          public void onClick(View view)
@@ -171,6 +178,8 @@ public  String filePath = "/storage/emulated/0/dest/";
              AOL = (ListView)findViewById(R.id.arrayOutputList);
 
              //create a new instance of the file ops class
+             System.out.println("MntDir: "+ MntDir);
+             System.out.println("filePath: "+filePath);
              fileOps fops = new fileOps(MntDir,filePath);
              //create an array list with SFL as name
              ArrayList<String> SFL = new ArrayList<String>();
@@ -180,6 +189,7 @@ public  String filePath = "/storage/emulated/0/dest/";
              ListAdapter LA = arrayAdapter;
              //create a file array from the contents of the source dir
              File[] files = fops.getSourceFiles();
+             //System.out.println(files.toString());
              //for each file in the files array do the actions
              for( int i = 0; i<files.length; i++)
              {//actions to be done on each of the files in the files array
@@ -203,18 +213,17 @@ public  String filePath = "/storage/emulated/0/dest/";
      hashButton = (Button) findViewById(R.id.md5button);
      hashButton.setOnClickListener(new OnClickListener()
      {
-
-                @Override
-                public void onClick(View view)
-                {
-                    fileChooser FC = new fileChooser();
-                    //FC.loadFileList();
-                    System.out.println("start of FC");
-                }
+        @Override
+        public void onClick(View view)
+        {
+           fileChooser FC = new fileChooser();
+           //FC.loadFileList();
+           System.out.println("start of FC");
+        }
 
      });
 
-        }
+ }
 
 
         public void HashGeneratorUtils() {

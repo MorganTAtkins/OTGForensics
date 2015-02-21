@@ -143,6 +143,7 @@ public class copyFile extends AsyncTask<String,String,String>{
 
                 while ((length = is.read(buffer)) > 0)
                 {
+
                     out.write(buffer, 0, length);
                     ////
                     // generate hash for each file
@@ -160,7 +161,7 @@ public class copyFile extends AsyncTask<String,String,String>{
                         String md5Hash = HashGeneratorUtils.generateMD5(source);
                         //md5hashOutput.setText("MD5 Hash: " + md5Hash);
                         System.out.println("md5 " + md5Hash);
-
+                        //files2CSV.generateCsvFile("storage/emulated/0/dest/files.txt",DestinationFile,md5Hash);
                         //String sha1Hash = HashGeneratorUtils.generateSHA1(source);
                         //SHA1HashOutput.setText("SHA-1 Hash: " + sha1Hash);
                         //System.out.println("sha1 " + sha1Hash);
