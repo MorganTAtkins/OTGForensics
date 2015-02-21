@@ -65,13 +65,12 @@ private Button dirContent;
 private Button dirSelector;
 
 public  String customDir;
-public  String MntDir;
+public  String MntDir = "/sdcard/usbStorage/sda1/";
 public  String filePath = "/storage/emulated/0/dest/";
 
 
 
-    ArrayList<String> listItems=new ArrayList<String>();
-    ArrayAdapter<String> adapter;
+
     /* Checks if external storage is available to at least read */
     public boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
@@ -80,13 +79,13 @@ public  String filePath = "/storage/emulated/0/dest/";
 
             Button ImgBtn = (Button) findViewById(R.id.ImagingBtn);
             ImgBtn.setBackgroundColor(Color.GREEN);
-            MntDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            //MntDir = Environment.getExternalStorageDirectory().getAbsolutePath();
             System.out.println("state = "+MntDir);
 
             //declaration of the text view and linking it the Trgtdir variable
             TextView TrgtDir = (TextView)findViewById(R.id.TrgtDir);
             //outputs the dir the text field
-            TrgtDir.setText("Directory: " + MntDir);
+            TrgtDir.setText("Source Directory: " + MntDir);
 
             imagingBtn.setEnabled(false);
             return true;
@@ -114,23 +113,7 @@ public  String filePath = "/storage/emulated/0/dest/";
 
 
 }
-    final Handler mHandler = new Handler(){
 
-        public void handleMessage(Message msg) {
-            Bundle b;
-            if(msg.what==1){
-
-                b=msg.getData();
-
-                //log the data received
-                Log.d("data key 1", String.valueOf(b.getInt("k1")));
-                Log.d("data key 2", String.valueOf(b.getInt("k2")));
-                Log.d("data key 3", String.valueOf(b.getInt("k3")));
-
-            }
-            super.handleMessage(msg);
-        }
-    };
  public void addListenerOnButton() {
 
      dirSelector = (Button) findViewById(R.id.dirSelector);

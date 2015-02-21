@@ -27,7 +27,7 @@ public class copyFile extends AsyncTask<String,String,String>{
         //FindMntDrive mnt = new FindMntDrive();
         MainActivity mA = new MainActivity();
 
-         mA.MntDir = "/storage/emulated/0/Download/";
+         //mA.MntDir = "/storage/emulated/0/Download/";
         //declaration of the source dir
 
         //System.out.println(MntDir);
@@ -82,6 +82,8 @@ public class copyFile extends AsyncTask<String,String,String>{
 
 
 
+
+
     //using streams to copy files (http://www.journaldev.com/861/4-ways-to-copy-file-in-java)
     public static void copyFileUsingStream(File source, File dest, String sourceFilename) throws IOException {
 
@@ -91,10 +93,15 @@ public class copyFile extends AsyncTask<String,String,String>{
         //try {
         InputStream is = null;
         OutputStream out = null;
+        //String DestinationFile= "not correctly initialised";
 
         System.out.println("file stream was opened ");
+
+
+        //destOption(dest,sourceFilename);
         String DestinationFile = (dest.toString() + "/" + sourceFilename);
         System.out.println("Destination file name " + DestinationFile);
+
         if (source.isDirectory())
         {
             if (!dest.exists() && !dest.mkdirs())
@@ -102,11 +109,16 @@ public class copyFile extends AsyncTask<String,String,String>{
                 throw new IOException("Cannot create dir " + dest.getAbsolutePath());
                 }
 
-            String[] children = source.list();
-            for (int i=0; i<children.length; i++)
+        String[] children = source.list();
+        for (int i=0; i<children.length; i++)
             {
                 System.out.println("recursive call "+ i);
-                copyFileUsingStream(new File(source, children[i]),new File(dest, children[i]),sourceFilename);
+                System.out.println(sourceFilename);
+                //DestinationFile = (dest.toString());
+                System.out.println(DestinationFile);
+                sourceFilename = "";
+                //dedt and source get switch to create the next dir
+                copyFileUsingStream(new File(source, children[i]),new File(DestinationFile, children[i]),sourceFilename);
             }
         } else
         {
@@ -117,7 +129,12 @@ public class copyFile extends AsyncTask<String,String,String>{
                 throw new IOException("Cannot create dir " + directory.getAbsolutePath());
             }
             try {
+
+
+                System.out.println("Source: "+ source);
+                //pulling from source
                 is = new FileInputStream(source);
+                //Pushing to DestinationFile
                 out = new BufferedOutputStream(new FileOutputStream(DestinationFile));
                 System.out.println("");
                 byte[] buffer = new byte[1024];
@@ -129,8 +146,9 @@ public class copyFile extends AsyncTask<String,String,String>{
                     out.write(buffer, 0, length);
                     ////
                     // generate hash for each file
-                }
 
+                }
+                is.close();
             } catch (IOException e)
             {
                 e.printStackTrace();
@@ -161,7 +179,7 @@ public class copyFile extends AsyncTask<String,String,String>{
                 }
             }
         }
-        is.close();
+
     }
 
 }

@@ -70,15 +70,16 @@
         android:layout_height="wrap_content"
         android:text="Dir Path"
         android:id="@+id/TrgtDir"
-        android:layout_above="@+id/dirContent"
-        android:layout_toEndOf="@+id/dirContent" />
+        android:layout_alignBaseline="@+id/SHA1HashOutput"
+        android:layout_alignBottom="@+id/SHA1HashOutput"
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/arrayOutputList"
         android:choiceMode="singleChoice"
-        android:layout_below="@+id/md5hashOutput" />
+        android:layout_alignTop="@+id/SHA256HashOutput" />
 
     <Button
         android:layout_width="wrap_content"
