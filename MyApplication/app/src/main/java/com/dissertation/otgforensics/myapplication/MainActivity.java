@@ -69,7 +69,7 @@ private volatile boolean running = true;
 public  String customDir;
 public  String MntDir = "/sdcard/usbStorage/";
 public  String filePath = "/storage/emulated/0/dest/";
-
+public  String type;
 
     /* Checks if external storage is available to at least read */
     public boolean isExternalStorageReadable() {
@@ -88,6 +88,7 @@ public  String filePath = "/storage/emulated/0/dest/";
             TrgtDir.setText("Source Directory: " + MntDir);
 
             imagingBtn.setEnabled(false);
+            copyKill.setEnabled(false);
             return true;
         }
         else {
@@ -126,6 +127,7 @@ public  String filePath = "/storage/emulated/0/dest/";
              System.out.println("Call FC.Dialog()");
              Dialog("Please input source destination",MntDir.toString(),"true");
              imagingBtn.setEnabled(true);
+             copyKill.setEnabled(true);
          }
      });
 
@@ -219,6 +221,45 @@ public  String filePath = "/storage/emulated/0/dest/";
            fileChooser FC = new fileChooser();
            //FC.loadFileList();
            System.out.println("start of FC");
+
+           Filter filter = new Filter();
+           DialogBox("Enter file type ","enter (.jpg/.txt/.mp3/etc","yes");
+
+           File[] JpgFiles = filter.finder(MntDir,type);
+           //System.out.println(filter.finder(MntDir).toString());
+           System.out.println("filter finished ");
+           //////
+            ListView AOL;
+            //ListAdapter LA;
+            AOL = (ListView)findViewById(R.id.arrayOutputList);
+
+            //create a new instance of the file ops class
+            //System.out.println("MntDir: "+ MntDir);
+            //System.out.println("filePath: "+filePath);
+            //fileOps fops = new fileOps(MntDir,filePath);
+            //create an array list with SFL as name
+            ArrayList<String> SFL = new ArrayList<String>();
+            //create the array adaptor for passing data to the list view
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(),R.layout.layout);
+            //create a list adaptor from the array adaptor (in place as a work around)
+            ListAdapter LA = arrayAdapter;
+            //create a file array from the contents of the source dir
+            //File[] files = fops.getSourceFiles();
+            System.out.println(JpgFiles.toString());
+            //for each file in the files array do the actions
+            for( int i = 0; i<JpgFiles.length; i++)
+            {//actions to be done on each of the files in the files array
+                //adding the file names to the SFL array
+                SFL.add(JpgFiles[i].toString());
+                //debugging
+                System.out.println("files " + +i + " " + JpgFiles[i].toString());
+                //adding each of the files to the array adaptor
+                arrayAdapter.add(JpgFiles[i].toString());
+            }
+            // popularing the list view with LA list array
+            AOL.setAdapter(LA);
+            //debugging
+
         }
 
      });
@@ -226,7 +267,7 @@ public  String filePath = "/storage/emulated/0/dest/";
  }
 
 
-        public void HashGeneratorUtils() {
+        /*public void HashGeneratorUtils() {
 
         }
 
@@ -298,7 +339,7 @@ public  String filePath = "/storage/emulated/0/dest/";
             return stringBuffer.toString();
         }
 
-
+*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -386,5 +427,53 @@ public void Dialog (String Title,String Message,String txtNeed){
     alertDialog.show();
 
     }
+    public void DialogBox (String Title,String Message,String txtNeed){
+        // creates alertDialog box based on the main activity context
+        AlertDialog.Builder alertBox = new AlertDialog.Builder(MainActivity.this);
 
+        // Setting Dialog Title
+        alertBox.setTitle(Title);
+
+
+        // Setting Dialog Message
+        alertBox.setMessage(Message);
+        // setting the text box for user input
+
+        if (txtNeed == "false"){
+
+        }else
+        {
+            final EditText input = new EditText(getBaseContext());
+            alertBox.setView(input);
+            input.setTextColor(Color.BLACK);
+            // Setting OK Button
+            alertBox.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Write your code here to execute after dialog closed
+                    Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                    // debugging
+                    System.out.println("user input = " + input.getText().toString());
+                    type = input.getText().toString();
+                    //take the user input and applies it to the customDir Variable
+                    //MntDir = MntDir.toString()+input.getText().toString();
+                    //declaration of the text view and linking it the Trgtdir variable
+                    //TextView TrgtDir = (TextView)findViewById(R.id.TrgtDir);
+                    //outputs the dir the text field
+
+                    //TrgtDir.setText("Directory: " + MntDir);
+                    // debugging
+                    //System.out.println("customDir = " + MntDir);
+                }
+            });
+            alertBox.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    //MntDir = " ";
+                }
+            });
+        }
+
+        // Showing Alert Message
+        alertBox.show();
+
+    }
 }

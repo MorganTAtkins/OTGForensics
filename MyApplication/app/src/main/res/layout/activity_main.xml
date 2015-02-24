@@ -6,7 +6,8 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:id="@+id/OTG">
 
-    <TextView android:text="OTG Forensics " android:layout_width="wrap_content"
+    <TextView android:text="OTG Forensics "
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text1"
         android:textSize="25dp" />
@@ -14,12 +15,12 @@
 
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hash Files"
+            android:text="Show Hashs"
             android:id="@+id/md5button"
             android:onClick="md5button"
-            android:layout_below="@+id/dirContent"
+            android:layout_below="@+id/ImagingBtn"
             android:layout_alignParentStart="true" />
 
         <TextView
@@ -32,18 +33,16 @@
             android:visibility="invisible" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Image"
+            android:text="Image files"
             android:id="@+id/ImagingBtn"
             android:onClick="ImagingBtn"
 
-            android:background="#ffff000c"
             android:enabled="true"
             android:clickable="false"
-            android:layout_above="@+id/dirContent"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="41dp" />
+            android:layout_below="@+id/dirContent"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,42 +69,41 @@
         android:layout_height="wrap_content"
         android:text="Dir Path"
         android:id="@+id/TrgtDir"
-        android:layout_alignBaseline="@+id/SHA1HashOutput"
-        android:layout_alignBottom="@+id/SHA1HashOutput"
+        android:layout_below="@+id/SHA1HashOutput"
         android:layout_alignParentStart="true" />
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/arrayOutputList"
         android:choiceMode="singleChoice"
         android:layout_alignTop="@+id/SHA256HashOutput" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show dir content"
+        android:text="Show directory content"
         android:id="@+id/dirContent"
         android:layout_below="@+id/dirSelector"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter Dir"
+        android:text="Enter Directory"
         android:id="@+id/dirSelector"
         android:layout_below="@+id/text1"
         android:layout_alignParentStart="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Stop"
+        android:text="Stop Imaging"
         android:id="@+id/copyKillSwitch"
-        android:layout_alignBaseline="@+id/md5button"
-        android:layout_alignBottom="@+id/md5button"
-        android:layout_alignEnd="@+id/ImagingBtn" />
+        android:layout_below="@+id/md5button"
+        android:layout_alignParentStart="true"
+        android:enabled="true" />
 
 </RelativeLayout>
 
