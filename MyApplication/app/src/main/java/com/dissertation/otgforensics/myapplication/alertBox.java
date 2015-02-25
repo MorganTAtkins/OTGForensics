@@ -13,9 +13,9 @@ import android.widget.Toast;
 /**
  * Created by Morgan on 24-Feb-15.
  */
-public class alertBox extends MainActivity{
+public class alertBox extends MainActivity {
 
-    public void DialogBox (String Title,String Message,String txtNeed,Context mContext){
+    public void DialogBox(String Title, String Message, String txtNeed, Context mContext) {
         // creates alertDialog box based on the main activity context
         AlertDialog.Builder alertBox = new AlertDialog.Builder(this);
 
@@ -27,10 +27,9 @@ public class alertBox extends MainActivity{
         alertBox.setMessage(Message);
         // setting the text box for user input
 
-        if (txtNeed == "false"){
+        if (txtNeed == "false") {
 
-        }else
-        {
+        } else {
             final EditText input = new EditText(getBaseContext());
             alertBox.setView(input);
             input.setTextColor(Color.BLACK);

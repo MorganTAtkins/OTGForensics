@@ -16,7 +16,7 @@ import java.io.FilenameFilter;
  * Created by Morgan on 17-Feb-15.
  */
 public class fileChooser extends MainActivity {
-     public void Dialog(){
+    public void Dialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         //Dialog dialog = new Dialog(this);
         // Setting Dialog Title
@@ -43,7 +43,7 @@ public class fileChooser extends MainActivity {
 
 
         // Showing Alert Message
-         alertDialog.show();
+        alertDialog.show();
 
     }
 }

@@ -7,27 +7,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class Imaging
-{
-    public static void main(String[] args)
-    {
+public class Imaging {
+    public static void main(String[] args) {
         FindMntDrive mnt = new FindMntDrive();
         String MntDir = mnt.DirPath;
         File srcFolder = new File(MntDir);
         File destFolder = new File("c:\\mkyong-new");
 
         //make sure source exists
-        if(!srcFolder.exists()){
+        if (!srcFolder.exists()) {
 
             System.out.println("Directory does not exist.");
             //just exit
             System.exit(0);
 
-        }else{
+        } else {
 
-            try{
-                copyFolder(srcFolder,destFolder);
-            }catch(IOException e){
+            try {
+                copyFolder(srcFolder, destFolder);
+            } catch (IOException e) {
                 e.printStackTrace();
                 //error, just exit
                 System.exit(0);
@@ -38,12 +36,12 @@ public class Imaging
     }
 
     public static void copyFolder(File src, File dest)
-            throws IOException{
+            throws IOException {
 
-        if(src.isDirectory()){
+        if (src.isDirectory()) {
 
             //if directory not exists, create it
-            if(!dest.exists()){
+            if (!dest.exists()) {
                 dest.mkdir();
                 System.out.println("Directory copied from "
                         + src + "  to " + dest);
@@ -57,10 +55,10 @@ public class Imaging
                 File srcFile = new File(src, file);
                 File destFile = new File(dest, file);
                 //recursive copy
-                copyFolder(srcFile,destFile);
+                copyFolder(srcFile, destFile);
             }
 
-        }else{
+        } else {
             //if file, then copy it
             //Use bytes stream to support all file types
             InputStream in = new FileInputStream(src);
@@ -70,7 +68,7 @@ public class Imaging
 
             int length;
             //copy the file content in bytes
-            while ((length = in.read(buffer)) > 0){
+            while ((length = in.read(buffer)) > 0) {
                 out.write(buffer, 0, length);
             }
 

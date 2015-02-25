@@ -1,33 +1,35 @@
 package com.dissertation.otgforensics.myapplication;
 
 
-        import android.graphics.Path;
-        import android.os.*;
-        import android.widget.Switch;
-        import android.widget.TextView;
+import android.graphics.Color;
+import android.graphics.Path;
+import android.os.*;
+import android.widget.Button;
+import android.widget.Switch;
+import android.widget.TextView;
 
-        import java.io.BufferedOutputStream;
-        import java.io.File;
-        import java.io.FileInputStream;
-        import java.io.FileOutputStream;
-        import java.io.FilenameFilter;
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.io.OutputStream;
-        import java.net.URL;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 
 
-public class copyFile extends AsyncTask<String,String,String>{
+public class copyFile extends AsyncTask<String, String, String> {
 
 
-    protected String doInBackground(String... strings){
+    protected String doInBackground(String... strings) {
         Looper.prepare();
         //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
         //FindMntDrive mnt = new FindMntDrive();
         MainActivity mA = new MainActivity();
 
-         //mA.MntDir = "/storage/emulated/0/Download/";
+        //mA.MntDir = "/storage/emulated/0/Download/";
         //declaration of the source dir
 
         //System.out.println(MntDir);
@@ -39,8 +41,7 @@ public class copyFile extends AsyncTask<String,String,String>{
 
 
         //System.out.println(sourcePath);
-        if (source.canRead())
-        {
+        if (source.canRead()) {
             System.out.println("Can access the dir.");
             File sourceFiles[] = source.listFiles();
             for (int i = 0; i < sourceFiles.length; i++) {
@@ -49,7 +50,7 @@ public class copyFile extends AsyncTask<String,String,String>{
                 // new Thread(new Runnable() {
                 try {
                     copyFileUsingStream(sourceFiles[i], dest, fileName);
-                }catch (IOException e) {
+                } catch (IOException e) {
                     System.out.println("it done goofed");
                     e.printStackTrace();
                 }
@@ -72,16 +73,12 @@ public class copyFile extends AsyncTask<String,String,String>{
     }
 
     protected void onProgressUpdate(Integer... progress) {
-       //setProgressPercent(progress[0]);
+        //setProgressPercent(progress[0]);
     }
 
     protected void onPostExecute(Long result) {
         //showDialog("Downloaded " + result + " bytes");
     }
-
-
-
-
 
 
     //using streams to copy files (http://www.journaldev.com/861/4-ways-to-copy-file-in-java)
@@ -102,36 +99,31 @@ public class copyFile extends AsyncTask<String,String,String>{
         String DestinationFile = (dest.toString() + "/" + sourceFilename);
         System.out.println("Destination file name " + DestinationFile);
 
-        if (source.isDirectory())
-        {
-            if (!dest.exists() && !dest.mkdirs())
-                {
+        if (source.isDirectory()) {
+            if (!dest.exists() && !dest.mkdirs()) {
                 throw new IOException("Cannot create dir " + dest.getAbsolutePath());
-                }
+            }
 
-        String[] children = source.list();
-        for (int i=0; i<children.length; i++)
-            {
-                System.out.println("recursive call "+ i);
+            String[] children = source.list();
+            for (int i = 0; i < children.length; i++) {
+                System.out.println("recursive call " + i);
                 System.out.println(sourceFilename);
                 //DestinationFile = (dest.toString());
                 System.out.println(DestinationFile);
                 sourceFilename = "";
                 //dedt and source get switch to create the next dir
-                copyFileUsingStream(new File(source, children[i]),new File(DestinationFile, children[i]),sourceFilename);
+                copyFileUsingStream(new File(source, children[i]), new File(DestinationFile, children[i]), sourceFilename);
             }
-        } else
-        {
+        } else {
             // make sure the directory we plan to store the recording in exists
             File directory = dest.getParentFile();
-            if (directory != null && !directory.exists() && !directory.mkdirs())
-            {
+            if (directory != null && !directory.exists() && !directory.mkdirs()) {
                 throw new IOException("Cannot create dir " + directory.getAbsolutePath());
             }
             try {
 
 
-                System.out.println("Source: "+ source);
+                System.out.println("Source: " + source);
                 //pulling from source
                 is = new FileInputStream(source);
                 //Pushing to DestinationFile
@@ -141,22 +133,19 @@ public class copyFile extends AsyncTask<String,String,String>{
                 int length;
                 //for loop
 
-                while ((length = is.read(buffer)) > 0)
-                {
+                while ((length = is.read(buffer)) > 0) {
 
                     out.write(buffer, 0, length);
-                    ////
+                    threadBlink tB = new threadBlink();
+                    tB.blink();
                     // generate hash for each file
 
                 }
                 is.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
-            } finally
-            {
-                if (out != null)
-                {
+            } finally {
+                if (out != null) {
                     try {
                         String md5Hash = HashGeneratorUtils.generateMD5(source);
                         //md5hashOutput.setText("MD5 Hash: " + md5Hash);
@@ -171,9 +160,7 @@ public class copyFile extends AsyncTask<String,String,String>{
                         //System.out.println("sha256 " + sha256Hash);
 
                         //public String md5Hasha = md5Hash;
-                    }
-                    catch (HashGenerationException ex)
-                    {
+                    } catch (HashGenerationException ex) {
                         ex.printStackTrace();
                     }
                     out.close();

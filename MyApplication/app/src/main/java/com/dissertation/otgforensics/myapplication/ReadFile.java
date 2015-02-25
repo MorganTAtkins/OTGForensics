@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
+
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -21,18 +22,18 @@ import android.widget.SimpleCursorAdapter;
 /**
  * Created by Morgan on 27-Jan-15.
  */
-public class ReadFile
-{
+public class ReadFile {
     FindMntDrive mnt = new FindMntDrive();
     //File MntDir = mnt.DirPath;
 
     public String path;
+
     //Path file = MntDir;
     private void main(String[] args) {
 
-        File file ;
+        File file;
         String[] paths;
-        try{
+        try {
             // create new file object
             file = new File(mnt.file_path);
 
@@ -40,14 +41,12 @@ public class ReadFile
             paths = file.list();
 
             // for each name in the path array
-            for(String path:paths)
-            {
+            for (String path : paths) {
                 // prints filename and directory name
                 System.out.println(path);
                 //String pathCon = paths;
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             // if any error occurs
             e.printStackTrace();
         }

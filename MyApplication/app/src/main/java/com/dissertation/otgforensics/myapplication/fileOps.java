@@ -18,15 +18,14 @@ public class fileOps {
     //public String from = "/storage/emulated/0/Download/";//
     //public String  to = "/storage/emulated/0/dest/";//
 
-    public fileOps(String from ,String to)
-    {
+    public fileOps(String from, String to) {
         source = new File(from);//declaration of the source dir
         dest = new File(to);// constructor for the destination
 
     }
-    public File[] getSourceFiles()
-    {
-        if (source == null || dest == null){
+
+    public File[] getSourceFiles() {
+        if (source == null || dest == null) {
             System.out.println("source or destination is null ");
             return null;
         }
