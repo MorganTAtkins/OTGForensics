@@ -153,9 +153,17 @@ public class copyFile extends AsyncTask<String, String, String> {
             } finally {
                 if (out != null) {
                     try {
-                        String md5Hash = HashGeneratorUtils.generateMD5(source);
-
-                        System.out.println("md5 " + md5Hash);
+                        String md5HashS = HashGeneratorUtils.generateMD5(source);
+                        String md5HashD = HashGeneratorUtils.generateMD5(dest);
+                        if (md5HashD == md5HashD)
+                        {
+                            System.out.println("Hashs match");
+                        }else
+                        {
+                            System.out.println("Hashs did not matched");
+                        }
+                        System.out.println("md5 hashS " + md5HashS);
+                        System.out.println("md5 hashD " + md5HashD);
 
                     } catch (HashGenerationException ex) {
                         ex.printStackTrace();
