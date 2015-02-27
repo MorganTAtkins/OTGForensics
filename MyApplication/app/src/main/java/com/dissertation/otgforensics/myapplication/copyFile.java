@@ -4,8 +4,10 @@ package com.dissertation.otgforensics.myapplication;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.os.*;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -71,7 +73,13 @@ public class copyFile extends AsyncTask<String, String, String> {
         long start = System.nanoTime();
         //copyFileUsingStream(source, dest);
         System.out.println("Time taken by Stream Copy = " + (System.nanoTime() - start));
+        //mA.pBar.setVisibility(View.INVISIBLE);
+
         boolean running = false;
+
+
+
+
         return source.listFiles().toString();
     }
 

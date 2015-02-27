@@ -7,9 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.Environment;
-
-import android.os.Bundle;
+import android.os.*;
 
 import android.view.Menu;
 
@@ -21,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.File;
@@ -47,18 +46,20 @@ public class MainActivity extends Activity {
     public Button copyKill ;
     public Button reMnt;
 
+    public ProgressBar pBar;
+
 
 
     public volatile boolean running = true;
 
-    public String customDir;
-    public String MntDir ;
+
+    public String MntDir;
     public String tempMntDir = "/sdcard/usbStorage/";
 
     public String filePath = "/storage/emulated/0/dest/";
     public String type = ".docx";
     public ListView AOL;
-    public Context context = this;
+
 
     /* Checks if external storage is the usb mnt point */
     public void isExternalStorage() {
@@ -111,6 +112,8 @@ public class MainActivity extends Activity {
 
         String state = Environment.getExternalStorageDirectory().toString();
             System.out.println(state);
+        //pBar = (ProgressBar)findViewById(R.id.progressBar);
+        //pBar.setVisibility(View.INVISIBLE);
     }
 
     public OnClickListener myClickListener = new OnClickListener() {
@@ -141,19 +144,22 @@ public class MainActivity extends Activity {
                 System.out.println("from = " + MntDir);
                 System.out.println("to = " + filePath);
                 // operations to be performed on a background thread
-
-                copyFile CF = new copyFile();
-                //CF.run();
-                //copyFile will run as long as running == true
+                pBar = (ProgressBar)findViewById(R.id.progressBar);
+                pBar.setVisibility(View.VISIBLE);
 
                     try {
                         System.out.println("let it begin "+ MntDir);
+
                         new copyFile().execute(MntDir);
-                    } catch (Exception e) {
+
+
+                    }
+                    catch (Exception e)
+                        {
                         System.out.println("Exception");
                         running = false;
-                    }
-
+                        }
+               pBar.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -171,10 +177,7 @@ public class MainActivity extends Activity {
         dirContent.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-             /*ListView AOL;
-             //ListAdapter LA;
-             AOL = (ListView)findViewById(R.id.arrayOutputList);
-             AOL.setOnItemClickListener(MainActivity.this);*/
+
                 HashGeneratorUtils HashGenUtils = new HashGeneratorUtils();
                 //create a new instance of the file ops class
                 System.out.println("MntDir: " + MntDir);
@@ -188,7 +191,7 @@ public class MainActivity extends Activity {
                 ListAdapter LA = arrayAdapter;
                 //create a file array from the contents of the source dir
                 File[] files = fops.getSourceFiles();
-                //System.out.println(files.toString());
+
                 //for each file in the files array do the actions
                 for (int i = 0; i < files.length; i++) {//actions to be done on each of the files in the files array
                     //adding the file names to the SFL array
@@ -196,7 +199,7 @@ public class MainActivity extends Activity {
                     //debugging
                     System.out.println("files " + +i + " " + files[i].toString());
                     //adding each of the files to the array adaptor
-                    //File hV = files[i];//hV stands for  hash value
+
                     arrayAdapter.add(files[i].toString());
                     File source = files[i];
                     String md5Hash;
@@ -208,10 +211,6 @@ public class MainActivity extends Activity {
                         {
                         ex.printStackTrace();
                         }
-
-
-
-
                 }
                 // popularing the list view with LA list array
                 AOL.setAdapter(LA);
@@ -231,7 +230,7 @@ public class MainActivity extends Activity {
 
                 Filter filter = new Filter();
                 File[] JpgFiles = filter.finder(MntDir, type);
-                //System.out.println(filter.finder(MntDir).toString());
+
                 System.out.println("filter finished ");
                 ////////
                 // create an array list with SFL as name
@@ -241,7 +240,7 @@ public class MainActivity extends Activity {
                 //create a list adaptor from the array adaptor (in place as a work around)
                 ListAdapter LA = arrayAdapter;
                 //create a file array from the contents of the source dir
-                //File[] files = fops.getSourceFiles();
+
                 System.out.println(JpgFiles.toString());
                 //for each file in the files array do the actions
                 for (int i = 0; i < JpgFiles.length; i++) {//actions to be done on each of the files in the files array
