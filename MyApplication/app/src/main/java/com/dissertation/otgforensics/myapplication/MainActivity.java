@@ -8,44 +8,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Environment;
-import android.os.Looper;
-import android.os.Message;
-import android.provider.Settings;
-import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.Menu;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
+
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Switch;
+
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
-import java.security.Security;
 import java.util.ArrayList;
-import java.util.List;
 
-import android.os.Handler;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
-import android.content.Intent;
-import android.net.Uri;
 
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -56,33 +37,38 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    HashGeneratorUtils myHashGeneratorUtils = new HashGeneratorUtils();
-    Context foo;
+    HashGeneratorUtils HashGenUtils = new HashGeneratorUtils();
+    HashGenerationException HashGenerationEx = new HashGenerationException();
+
+    public Button imagetype;
+    public Button imagingBtn;
+    public Button dirContent ;
+    public Button dirSelector ;
+    public Button copyKill ;
+    public Button reMnt;
 
 
-    private Button hashButton = (Button) findViewById(R.id.md5button);
-    private Button imagingBtn = (Button) findViewById(R.id.ImagingBtn);
-    private Button dirContent = (Button) findViewById(R.id.dirContent);
-    private Button dirSelector = (Button) findViewById(R.id.dirSelector);
-    private Button copyKill = (Button) findViewById(R.id.copyKillSwitch);
-    private volatile boolean running = true;
+
+    public volatile boolean running = true;
 
     public String customDir;
-    public String MntDir;//= "/sdcard/";
+    public String MntDir ;
+    public String tempMntDir = "/sdcard/usbStorage/";
+
     public String filePath = "/storage/emulated/0/dest/";
     public String type = ".docx";
     public ListView AOL;
     public Context context = this;
 
-    /* Checks if external storage is available to at least read */
-    public boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+    /* Checks if external storage is the usb mnt point */
+    public void isExternalStorage() {
 
+        File pointer = new File(tempMntDir);
+        if (pointer.exists()){
+            MntDir = tempMntDir;
             Button ImgBtn = (Button) findViewById(R.id.ImagingBtn);
             ImgBtn.setBackgroundColor(Color.GREEN);
-            MntDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+
             System.out.println("External Storage Dir = " + MntDir);
 
             //declaration of the text view and linking it the Trgtdir variable
@@ -92,10 +78,15 @@ public class MainActivity extends Activity {
 
             imagingBtn.setEnabled(false);
             copyKill.setEnabled(false);
-            return true;
+            //return true;
         } else {
-            Dialog("Attention", "Please input source destination", "false");
-            return false;
+            MntDir = Environment.getExternalStorageDirectory().toString();
+            TextView TrgtDir = (TextView) findViewById(R.id.TrgtDir);
+            TrgtDir.setText("Source Directory: " + MntDir);
+            Dialog("Attention", "Enter source destination", "false");
+            imagingBtn.setEnabled(false);
+            copyKill.setEnabled(false);
+            //return false;
         }
         //######
         // change icon or text label to indicate status
@@ -110,7 +101,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         addListenerOnButton();
-        isExternalStorageReadable();
+        isExternalStorage();
         Dialog("Warning", "Lock device to portrait!", "false");
 
         //ListView AOL;
@@ -118,7 +109,8 @@ public class MainActivity extends Activity {
         AOL = (ListView) findViewById(R.id.arrayOutputList);
         //AOL.setOnItemClickListener()
 
-
+        String state = Environment.getExternalStorageDirectory().toString();
+            System.out.println(state);
     }
 
     public OnClickListener myClickListener = new OnClickListener() {
@@ -129,11 +121,12 @@ public class MainActivity extends Activity {
 
     public void addListenerOnButton() {
 
+        dirSelector = (Button) findViewById(R.id.dirSelector);
         dirSelector.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("Call FC.Dialog()");
-                Dialog("Please input source destination", MntDir.toString(), "true");
+                Dialog("Please input source destination", "Enter usb mnt point", "true");
                 imagingBtn.setEnabled(true);
                 copyKill.setEnabled(true);
             }
@@ -141,6 +134,7 @@ public class MainActivity extends Activity {
 
 
         //Select a specific button to link to an action
+        imagingBtn  = (Button) findViewById(R.id.ImagingBtn);
         imagingBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,18 +145,20 @@ public class MainActivity extends Activity {
                 copyFile CF = new copyFile();
                 //CF.run();
                 //copyFile will run as long as running == true
-                while (running) {
+
                     try {
-                        new copyFile().execute();
+                        System.out.println("let it begin "+ MntDir);
+                        new copyFile().execute(MntDir);
                     } catch (Exception e) {
                         System.out.println("Exception");
                         running = false;
                     }
-                }
+
 
             }
         });
 
+        copyKill    = (Button) findViewById(R.id.copyKillSwitch);
         copyKill.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +167,7 @@ public class MainActivity extends Activity {
         });
 
 
+        dirContent  = (Button) findViewById(R.id.dirContent);
         dirContent.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,7 +175,7 @@ public class MainActivity extends Activity {
              //ListAdapter LA;
              AOL = (ListView)findViewById(R.id.arrayOutputList);
              AOL.setOnItemClickListener(MainActivity.this);*/
-
+                HashGeneratorUtils HashGenUtils = new HashGeneratorUtils();
                 //create a new instance of the file ops class
                 System.out.println("MntDir: " + MntDir);
                 System.out.println("filePath: " + filePath);
@@ -199,7 +196,22 @@ public class MainActivity extends Activity {
                     //debugging
                     System.out.println("files " + +i + " " + files[i].toString());
                     //adding each of the files to the array adaptor
+                    //File hV = files[i];//hV stands for  hash value
                     arrayAdapter.add(files[i].toString());
+                    File source = files[i];
+                    String md5Hash;
+                    try {
+                         md5Hash = HashGenUtils.generateMD5(source);
+                         arrayAdapter.add("   "+md5Hash);
+                        }
+                    catch (HashGenerationException ex)
+                        {
+                        ex.printStackTrace();
+                        }
+
+
+
+
                 }
                 // popularing the list view with LA list array
                 AOL.setAdapter(LA);
@@ -208,8 +220,8 @@ public class MainActivity extends Activity {
             }
         });
 
-
-        hashButton.setOnClickListener(new OnClickListener() {
+        imagetype  = (Button) findViewById(R.id.imagetype);
+        imagetype.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -245,6 +257,16 @@ public class MainActivity extends Activity {
                 //debugging
 
             }
+
+        });
+
+        reMnt =   (Button) findViewById(R.id.reMnt);
+        reMnt.setOnClickListener(new OnClickListener() {
+           @Override
+            public void onClick(View view) {
+               isExternalStorage();
+
+           }
 
         });
 
@@ -297,7 +319,7 @@ public class MainActivity extends Activity {
                     // debugging
                     System.out.println("user input = " + input.getText().toString());
                     //take the user input and applies it to the customDir Variable
-                    MntDir = MntDir.toString() + input.getText().toString();
+                    MntDir = input.getText().toString();
                     //declaration of the text view and linking it the Trgtdir variable
                     TextView TrgtDir = (TextView) findViewById(R.id.TrgtDir);
                     //outputs the dir the text field

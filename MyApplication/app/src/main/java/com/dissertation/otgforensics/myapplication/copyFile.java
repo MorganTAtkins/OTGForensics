@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Path;
 import android.os.*;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -34,8 +35,10 @@ public class copyFile extends AsyncTask<String, String, String> {
 
         //System.out.println(MntDir);
 
-
-        File source = new File(mA.MntDir);
+        //System.out.println("mnt "+ strings.toString());
+        String dodo = strings[0];
+        System.out.println(dodo);
+        File source = new File(dodo);
 
         File dest = new File("/storage/emulated/0/dest/");// constructor for the destination
 
@@ -68,7 +71,7 @@ public class copyFile extends AsyncTask<String, String, String> {
         long start = System.nanoTime();
         //copyFileUsingStream(source, dest);
         System.out.println("Time taken by Stream Copy = " + (System.nanoTime() - start));
-
+        boolean running = false;
         return source.listFiles().toString();
     }
 
@@ -84,18 +87,16 @@ public class copyFile extends AsyncTask<String, String, String> {
     //using streams to copy files (http://www.journaldev.com/861/4-ways-to-copy-file-in-java)
     public static void copyFileUsingStream(File source, File dest, String sourceFilename) throws IOException {
 
-        //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-        //InputStream is = null;
-        //OutputStream os = null;
-        //try {
+
+
         InputStream is = null;
         OutputStream out = null;
-        //String DestinationFile= "not correctly initialised";
+
 
         System.out.println("file stream was opened ");
 
 
-        //destOption(dest,sourceFilename);
+
         String DestinationFile = (dest.toString() + "/" + sourceFilename);
         System.out.println("Destination file name " + DestinationFile);
 
@@ -111,7 +112,7 @@ public class copyFile extends AsyncTask<String, String, String> {
                 //DestinationFile = (dest.toString());
                 System.out.println(DestinationFile);
                 sourceFilename = "";
-                //dedt and source get switch to create the next dir
+                //dest and source get switch to create the next dir
                 copyFileUsingStream(new File(source, children[i]), new File(DestinationFile, children[i]), sourceFilename);
             }
         } else {
@@ -133,14 +134,11 @@ public class copyFile extends AsyncTask<String, String, String> {
                 int length;
                 //for loop
 
-                while ((length = is.read(buffer)) > 0) {
-
+                while ((length = is.read(buffer)) > 0)
+                {
                     out.write(buffer, 0, length);
-                    threadBlink tB = new threadBlink();
-                    tB.blink();
-                    // generate hash for each file
-
                 }
+
                 is.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -148,18 +146,9 @@ public class copyFile extends AsyncTask<String, String, String> {
                 if (out != null) {
                     try {
                         String md5Hash = HashGeneratorUtils.generateMD5(source);
-                        //md5hashOutput.setText("MD5 Hash: " + md5Hash);
+
                         System.out.println("md5 " + md5Hash);
-                        //files2CSV.generateCsvFile("storage/emulated/0/dest/files.txt",DestinationFile,md5Hash);
-                        //String sha1Hash = HashGeneratorUtils.generateSHA1(source);
-                        //SHA1HashOutput.setText("SHA-1 Hash: " + sha1Hash);
-                        //System.out.println("sha1 " + sha1Hash);
 
-                        //String sha256Hash = HashGeneratorUtils.generateSHA256(source);
-                        //SHA256HashOutput.setText("SHA-256 Hash: " + sha256Hash);
-                        //System.out.println("sha256 " + sha256Hash);
-
-                        //public String md5Hasha = md5Hash;
                     } catch (HashGenerationException ex) {
                         ex.printStackTrace();
                     }
