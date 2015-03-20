@@ -17,7 +17,7 @@ public class HashGeneratorUtils {
 
     }
 
-    public static String generateMD5(String message) throws HashGenerationException {
+    public static String generateMD5(String message)  {
         return hashString(message, "MD5");
     }
 
@@ -41,18 +41,21 @@ public class HashGeneratorUtils {
         return hashFile(file, "SHA-256");
     }
 
-    private static String hashString(String message, String algorithm)
-            throws HashGenerationException {
+    private static String hashString(String message, String algorithm){
+
 
         try {
             MessageDigest digest = MessageDigest.getInstance(algorithm);
             byte[] hashedBytes = digest.digest(message.getBytes("UTF-8"));
 
             return convertByteArrayToHexString(hashedBytes);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            throw new HashGenerationException(
-                    "Could not generate hash from String", ex);
         }
+        catch (NoSuchAlgorithmException | UnsupportedEncodingException ex)
+        {
+
+                    System.out.println("hashString Failed");
+        }
+        return null;
     }
 
     private static String hashFile(File file, String algorithm)

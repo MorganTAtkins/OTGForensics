@@ -45,6 +45,8 @@ public class MainActivity extends Activity {
     public Button dirSelector ;
     public Button copyKill ;
     public Button reMnt;
+    public Button imageSel;
+    public EditText inputTxt;
 
     public ProgressBar pBar;
 
@@ -53,13 +55,13 @@ public class MainActivity extends Activity {
     public volatile boolean running = true;
 
 
-    public String MntDir;
-    public String tempMntDir = "/sdcard/usbStorage/";
+    public String MntDir ;
+    public String tempMntDir = "/sdcard/usbStorage/sda1";
 
-    public String filePath = "/storage/emulated/0/dest/";
-    public String type = ".docx";
+    public String filePath = "/storage/emulated/0/dest";
+    public String type;//=".docx" ;
     public ListView AOL;
-
+    public File[] JpgFiles;
 
     /* Checks if external storage is the usb mnt point */
     public void isExternalStorage() {
@@ -69,7 +71,10 @@ public class MainActivity extends Activity {
             MntDir = tempMntDir;
             Button ImgBtn = (Button) findViewById(R.id.ImagingBtn);
             ImgBtn.setBackgroundColor(Color.GREEN);
+            byte[] test = getExternalFilesDir("/sdcard/usbStorage/").toString().getBytes();
 
+
+            System.out.println(test);
             System.out.println("External Storage Dir = " + MntDir);
 
             //declaration of the text view and linking it the Trgtdir variable
@@ -111,16 +116,25 @@ public class MainActivity extends Activity {
         //AOL.setOnItemClickListener()
 
         String state = Environment.getExternalStorageDirectory().toString();
-            System.out.println(state);
+        System.out.println(state);
         //pBar = (ProgressBar)findViewById(R.id.progressBar);
         //pBar.setVisibility(View.INVISIBLE);
+        String boob = "boobs";
+        String test = HashGeneratorUtils.generateMD5(boob);
+        System.out.println(test);
+        thisContext();
+        popListRay popListRay = new popListRay();
     }
-
     public OnClickListener myClickListener = new OnClickListener() {
         public void onClick(View v) {
             //code to be written to handle the click event
         }
     };
+
+    public Context thisContext(){
+        Context context1 = MainActivity.this;
+        return context1;
+    }
 
     public void addListenerOnButton() {
 
@@ -151,7 +165,7 @@ public class MainActivity extends Activity {
                         System.out.println("let it begin "+ MntDir);
 
                         new copyFile().execute(MntDir);
-
+                        running = false;
 
                     }
                     catch (Exception e)
@@ -182,7 +196,9 @@ public class MainActivity extends Activity {
                 //create a new instance of the file ops class
                 System.out.println("MntDir: " + MntDir);
                 System.out.println("filePath: " + filePath);
+
                 fileOps fops = new fileOps(MntDir, filePath);
+
                 //create an array list with SFL as name
                 ArrayList<String> SFL = new ArrayList<String>();
                 //create the array adaptor for passing data to the list view
@@ -190,6 +206,7 @@ public class MainActivity extends Activity {
                 //create a list adaptor from the array adaptor (in place as a work around)
                 ListAdapter LA = arrayAdapter;
                 //create a file array from the contents of the source dir
+
                 File[] files = fops.getSourceFiles();
 
                 //for each file in the files array do the actions
@@ -224,40 +241,37 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                System.out.println("start of FC");
-                DialogBox("Enter file type ", "enter (.jpg/.txt/.mp3/etc)", "yes");
 
+                inputTxt = (EditText) findViewById(R.id.editText);
+                type = inputTxt.getText().toString();
+                System.out.println("text box = "+ type);
+                if (type != null) {
+                    Filter filter = new Filter();
+                    JpgFiles = filter.finder(MntDir, type);
 
-                Filter filter = new Filter();
-                File[] JpgFiles = filter.finder(MntDir, type);
-
-                System.out.println("filter finished ");
-                ////////
-                // create an array list with SFL as name
-                ArrayList<String> SFL = new ArrayList<String>();
-                //create the array adaptor for passing data to the list view
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.layout);
-                //create a list adaptor from the array adaptor (in place as a work around)
-                ListAdapter LA = arrayAdapter;
-                //create a file array from the contents of the source dir
-
-                System.out.println(JpgFiles.toString());
-                //for each file in the files array do the actions
-                for (int i = 0; i < JpgFiles.length; i++) {//actions to be done on each of the files in the files array
-                    //adding the file names to the SFL array
-                    SFL.add(JpgFiles[i].toString());
-                    //debugging
-                    System.out.println("files " + +i + " " + JpgFiles[i].toString());
-                    //adding each of the files to the array adaptor
-                    arrayAdapter.add(JpgFiles[i].toString());
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(thisContext(), R.layout.layout);
+                    popListRay popListRay = new popListRay();
+                    popListRay.popList(JpgFiles, AOL, arrayAdapter);
+                    imageSel.setEnabled(true);
                 }
-                // popularing the list view with LA list array
-                AOL.setAdapter(LA);
-                //debugging
+                else{
+                    fileChooser fileChoo = new fileChooser();
+                    fileChoo.Dialog(thisContext());
+                }
 
             }
-
         });
+        imageSel  = (Button) findViewById(R.id.imageSel);
+        imageSel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageType imgtyp = new ImageType();
+                imgtyp.imagetype(JpgFiles);
+
+            }
+        });
+
+
 
         reMnt =   (Button) findViewById(R.id.reMnt);
         reMnt.setOnClickListener(new OnClickListener() {
@@ -270,6 +284,7 @@ public class MainActivity extends Activity {
         });
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -293,6 +308,7 @@ public class MainActivity extends Activity {
     }
 
     public void Dialog(String Title, String Message, String txtNeed) {
+
         // creates alertDialog box based on the main activity context
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
 
@@ -326,13 +342,15 @@ public class MainActivity extends Activity {
                     TrgtDir.setText("Directory: " + MntDir);
                     // debugging
                     System.out.println("customDir = " + MntDir);
+
                 }
             });
-            alertDialog.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    MntDir = " ";
+                    MntDir = MntDir;
                 }
             });
+
         }
 
         // Showing Alert Message
@@ -340,7 +358,7 @@ public class MainActivity extends Activity {
 
     }
 
-    public void DialogBox(String Title, String Message, String txtNeed) {
+    /*public void DialogBox(String Title, String Message, String txtNeed) {
         // creates alertDialog box based on the main activity context
         AlertDialog.Builder alertBox = new AlertDialog.Builder(MainActivity.this);
 
@@ -379,5 +397,5 @@ public class MainActivity extends Activity {
         // Showing Alert Message
         alertBox.show();
 
-    }
+    }*/
 }

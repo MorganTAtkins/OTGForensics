@@ -42,7 +42,8 @@ public class copyFile extends AsyncTask<String, String, String> {
         System.out.println(dodo);
         File source = new File(dodo);
 
-        File dest = new File("/storage/emulated/0/dest/");// constructor for the destination
+        //File dest = new File("/storage/emulated/0/dest/");// constructor for the destination
+        File dest = new File("/sdcard/dest/");// constructor for the destination
 
 
         //System.out.println(sourcePath);
@@ -153,8 +154,11 @@ public class copyFile extends AsyncTask<String, String, String> {
             } finally {
                 if (out != null) {
                     try {
+                        files2CSV csvout = new files2CSV();
+
                         String md5HashS = HashGeneratorUtils.generateMD5(source);
                         String md5HashD = HashGeneratorUtils.generateMD5(dest);
+                        csvout.generateCsvFile(source.toString(),sourceFilename,md5HashD);
                         if (md5HashD == md5HashD)
                         {
                             System.out.println("Hashs match");

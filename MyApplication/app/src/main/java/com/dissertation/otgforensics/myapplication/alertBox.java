@@ -15,32 +15,33 @@ import android.widget.Toast;
  */
 public class alertBox extends MainActivity {
 
-    public void DialogBox(String Title, String Message, String txtNeed, Context mContext) {
+    public String Attention(String Title, String Message, String txtNeed) {
         // creates alertDialog box based on the main activity context
-        AlertDialog.Builder alertBox = new AlertDialog.Builder(this);
-
+        AlertDialog.Builder alertBox1 = new AlertDialog.Builder(getParent());
+        String type= "1";
         // Setting Dialog Title
-        alertBox.setTitle(Title);
+        alertBox1.setTitle(Title);
 
 
         // Setting Dialog Message
-        alertBox.setMessage(Message);
+        alertBox1.setMessage(Message);
         // setting the text box for user input
 
         if (txtNeed == "false") {
 
-        } else {
-            final EditText input = new EditText(getBaseContext());
-            alertBox.setView(input);
+        }
+        else {
+            final EditText input = new EditText(getApplicationContext());
+            alertBox1.setView(input);
             input.setTextColor(Color.BLACK);
             // Setting OK Button
-            alertBox.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            alertBox1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     // Write your code here to execute after dialog closed
-                    Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
                     // debugging
                     System.out.println("user input = " + input.getText().toString());
-                    type = input.getText().toString();
+                    String entered = input.getText().toString();
                     //take the user input and applies it to the customDir Variable
                     //MntDir = MntDir.toString()+input.getText().toString();
                     //declaration of the text view and linking it the Trgtdir variable
@@ -52,7 +53,7 @@ public class alertBox extends MainActivity {
                     //System.out.println("customDir = " + MntDir);
                 }
             });
-            alertBox.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+            alertBox1.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     //MntDir = " ";
                 }
@@ -60,8 +61,8 @@ public class alertBox extends MainActivity {
         }
 
         // Showing Alert Message
-        alertBox.show();
+        alertBox1.show(); return type;
 
-    }
+   }
 
 }
