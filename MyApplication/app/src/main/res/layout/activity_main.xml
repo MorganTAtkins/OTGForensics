@@ -17,11 +17,12 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="                  Image file type                       "
+            android:text="Show file type"
             android:id="@+id/imagetype"
             android:onClick="md5button"
-            android:layout_below="@+id/ImagingBtn"
-            android:layout_alignParentStart="true" />
+            android:layout_below="@+id/editText"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/ImagingBtn" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,7 +34,7 @@
             android:visibility="invisible" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Image files"
             android:id="@+id/ImagingBtn"
@@ -41,8 +42,9 @@
 
             android:enabled="true"
             android:clickable="false"
-            android:layout_below="@+id/dirContent"
-            android:layout_alignParentStart="true" />
+            android:layout_below="@+id/imageSel"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/dirContent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -69,45 +71,43 @@
         android:layout_height="wrap_content"
         android:text="Dir Path"
         android:id="@+id/TrgtDir"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentStart="false"
-        android:layout_alignEnd="@+id/copyKillSwitch" />
+        android:layout_below="@+id/text1"
+        android:layout_alignParentEnd="true" />
 
     <ListView
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/arrayOutputList"
         android:choiceMode="singleChoice"
-        android:layout_alignTop="@+id/SHA256HashOutput"
-        android:layout_alignEnd="@+id/copyKillSwitch"
-        android:layout_alignBottom="@+id/progressBar" />
+        android:layout_toEndOf="@+id/text1"
+        android:layout_alignTop="@+id/dirSelector" />
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Show directory content"
         android:id="@+id/dirContent"
         android:layout_below="@+id/dirSelector"
-        android:layout_alignParentStart="true" />
+        android:layout_toStartOf="@+id/arrayOutputList" />
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter Directory"
         android:id="@+id/dirSelector"
-        android:layout_below="@+id/text1"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/TrgtDir"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/arrayOutputList" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Stop Imaging"
         android:id="@+id/copyKillSwitch"
         android:enabled="true"
-        android:layout_alignTop="@+id/md5hashOutput"
-        android:layout_alignParentEnd="false"
-        android:layout_toEndOf="@+id/imagetype" />
+        android:layout_below="@+id/ImagingBtn"
+        android:layout_alignEnd="@+id/ImagingBtn" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -115,8 +115,9 @@
         android:layout_height="wrap_content"
         android:text="Refresh Mnt"
         android:id="@+id/reMnt"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/arrayOutputList" />
+        android:layout_below="@+id/copyKillSwitch"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/copyKillSwitch" />
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -124,29 +125,29 @@
         android:id="@+id/progressBar"
         android:max="200"
         android:indeterminate="false"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/reMnt"
-        android:layout_alignEnd="@+id/TrgtDir"
         android:visibility="invisible"
-        android:layout_above="@+id/reMnt" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="                   image selection                  "
+        android:text="image selection"
         android:id="@+id/imageSel"
         android:enabled="false"
-        android:layout_above="@+id/md5hashOutput"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/md5hashOutput"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/ImagingBtn" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:layout_alignTop="@+id/md5hashOutput"
-        android:layout_alignParentStart="false"
-        android:text="Enter file type"
-        android:autoText="true" />
+        android:text=".docx"
+        android:autoText="false"
+        android:layout_below="@+id/dirContent"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/imagetype" />
 
 </RelativeLayout>
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class popListRay {
 
     public void popList(File[] JpgFiles, ListView AOL,ArrayAdapter arrayAdapter){
-    System.out.println("popList");
+    //System.out.println("popList");
         MainActivity MainActivity = new MainActivity();
 
     ////////

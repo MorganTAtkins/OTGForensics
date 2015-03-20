@@ -245,7 +245,7 @@ public class MainActivity extends Activity {
                 inputTxt = (EditText) findViewById(R.id.editText);
                 type = inputTxt.getText().toString();
                 System.out.println("text box = "+ type);
-                if (type != null) {
+                if (type != null||type==" ") {
                     Filter filter = new Filter();
                     JpgFiles = filter.finder(MntDir, type);
 
