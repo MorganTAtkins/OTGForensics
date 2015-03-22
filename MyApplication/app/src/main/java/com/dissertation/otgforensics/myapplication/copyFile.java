@@ -143,6 +143,7 @@ public class copyFile extends AsyncTask<String, String, String> {
                 int length;
                 //for loop
 
+
                 while ((length = is.read(buffer)) > 0)
                 {
                     out.write(buffer, 0, length);
@@ -154,8 +155,9 @@ public class copyFile extends AsyncTask<String, String, String> {
             } finally {
                 if (out != null) {
                     try {
-                        files2CSV csvout = new files2CSV();
 
+                        files2CSV csvout = new files2CSV();
+                        System.out.println("CSV OUT CALLED");
                         String md5HashS = HashGeneratorUtils.generateMD5(source);
                         String md5HashD = HashGeneratorUtils.generateMD5(dest);
                         csvout.generateCsvFile(source.toString(),sourceFilename,md5HashD);

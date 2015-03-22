@@ -34,7 +34,7 @@ public class ImageType {
 
 
 
-    public void main(String MntDir) {
+    public void main() {
 
         MainActivity MainActivity = new MainActivity();
         AOL = (ListView) MainActivity.findViewById(R.id.arrayOutputList);
@@ -44,11 +44,11 @@ public class ImageType {
 
                 System.out.println("Destination ### = " +destination);
                 //DialogBox("Enter file type ", "enter (.jpg/.txt/.mp3/etc)", "yes");
-                ImageType imgtyp = new ImageType();
+                //ImageType imgtyp = new ImageType();
                 //imgtyp.dispayTypeSel();
 
                 Filter filter = new Filter();
-                File[] JpgFiles = filter.finder(MntDir, type);
+                //File[] JpgFiles = filter.finder(MntDir, type);
 
                 System.out.println("filter finished ");
                 ////////
@@ -60,21 +60,21 @@ public class ImageType {
                 ListAdapter LA = arrayAdapter;
                 //create a file array from the contents of the source dir
 
-                System.out.println(JpgFiles.toString());
+                System.out.println(MainActivity.JpgFiles.toString());
                 //for each file in the files array do the actions
-                for (int i = 0; i < JpgFiles.length; i++) {//actions to be done on each of the files in the files array
+                for (int i = 0; i < MainActivity.JpgFiles.length; i++) {//actions to be done on each of the files in the files array
                     //adding the file names to the SFL array
-                    SFL.add(JpgFiles[i].toString());
+                    SFL.add(MainActivity.JpgFiles[i].toString());
                     //debugging
-                    System.out.println("files " + +i + " " + JpgFiles[i].toString());
+                    System.out.println("files " + +i + " " + MainActivity.JpgFiles[i].toString());
                     //adding each of the files to the array adaptor
-                    arrayAdapter.add(JpgFiles[i].toString());
+                    arrayAdapter.add(MainActivity.JpgFiles[i].toString());
                 }
                 // popularing the list view with LA list array
                 AOL.setAdapter(LA);
                 //debugging
 
-                imgtyp.imagetype(JpgFiles);
+                imagetype(MainActivity.JpgFiles);
 
 
 
@@ -110,6 +110,7 @@ public class ImageType {
                 }
 
                 is.close();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

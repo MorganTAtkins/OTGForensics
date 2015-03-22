@@ -25,6 +25,7 @@ import android.widget.TextView;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 
 import android.view.View.OnClickListener;
@@ -39,7 +40,7 @@ public class MainActivity extends Activity {
     HashGeneratorUtils HashGenUtils = new HashGeneratorUtils();
     HashGenerationException HashGenerationEx = new HashGenerationException();
 
-    public Button imagetype;
+    public Button showtype;
     public Button imagingBtn;
     public Button dirContent ;
     public Button dirSelector ;
@@ -71,10 +72,9 @@ public class MainActivity extends Activity {
             MntDir = tempMntDir;
             Button ImgBtn = (Button) findViewById(R.id.ImagingBtn);
             ImgBtn.setBackgroundColor(Color.GREEN);
-            byte[] test = getExternalFilesDir("/sdcard/usbStorage/").toString().getBytes();
+           // byte[] test = getExternalFilesDir("/sdcard/usbStorage/").toString().getBytes();
+            //System.out.println(test);
 
-
-            System.out.println(test);
             System.out.println("External Storage Dir = " + MntDir);
 
             //declaration of the text view and linking it the Trgtdir variable
@@ -94,11 +94,7 @@ public class MainActivity extends Activity {
             copyKill.setEnabled(false);
             //return false;
         }
-        //######
-        // change icon or text label to indicate status
-        //colour circle == green
-        //colour circle if red by default
-        //######
+
     }
 
     @Override
@@ -163,8 +159,14 @@ public class MainActivity extends Activity {
 
                     try {
                         System.out.println("let it begin "+ MntDir);
-
+                        long startTime = System.nanoTime();
+                        //###
                         new copyFile().execute(MntDir);
+                        //###
+                        long endTime = System.nanoTime();
+
+                        long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
+                        System.out.println("Copy time: "+duration);
                         running = false;
 
                     }
@@ -236,8 +238,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        imagetype  = (Button) findViewById(R.id.imagetype);
-        imagetype.setOnClickListener(new OnClickListener() {
+        showtype  = (Button) findViewById(R.id.showType);
+        showtype.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -266,7 +268,11 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 ImageType imgtyp = new ImageType();
+                long start = System.nanoTime();
+                //copyFileUsingStream(source, dest);
                 imgtyp.imagetype(JpgFiles);
+                System.out.println("Time taken by Stream Copy = " + (System.nanoTime() - start));
+
 
             }
         });
