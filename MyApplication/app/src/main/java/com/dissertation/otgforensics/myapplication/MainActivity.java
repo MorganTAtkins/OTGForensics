@@ -48,10 +48,13 @@ public class MainActivity extends Activity {
     public Button reMnt;
     public Button imageSel;
     public EditText inputTxt;
+    public EditText sourceDir;
+    public EditText destDir;
+    public TextView TrgtDir;
 
     public ProgressBar pBar;
 
-
+    public long startTime;
 
     public volatile boolean running = true;
 
@@ -61,8 +64,11 @@ public class MainActivity extends Activity {
 
     public String filePath = "/storage/emulated/0/dest";
     public String type;//=".docx" ;
+    public String sourceDirString;
+    public String destDirString;
     public ListView AOL;
     public File[] JpgFiles;
+
 
     /* Checks if external storage is the usb mnt point */
     public void isExternalStorage() {
@@ -87,8 +93,8 @@ public class MainActivity extends Activity {
             //return true;
         } else {
             MntDir = Environment.getExternalStorageDirectory().toString();
-            TextView TrgtDir = (TextView) findViewById(R.id.TrgtDir);
-            TrgtDir.setText("Source Directory: " + MntDir);
+            //TextView TrgtDir = (TextView) findViewById(R.id.TrgtDir);
+            //TrgtDir.setText("Source Directory: " + MntDir);
             Dialog("Attention", "Enter source destination", "false");
             imagingBtn.setEnabled(false);
             copyKill.setEnabled(false);
@@ -110,14 +116,13 @@ public class MainActivity extends Activity {
         //ListAdapter LA;
         AOL = (ListView) findViewById(R.id.arrayOutputList);
         //AOL.setOnItemClickListener()
-
+        TrgtDir = (TextView) findViewById(R.id.TrgtDir);
         String state = Environment.getExternalStorageDirectory().toString();
         System.out.println(state);
         //pBar = (ProgressBar)findViewById(R.id.progressBar);
         //pBar.setVisibility(View.INVISIBLE);
-        String boob = "boobs";
-        String test = HashGeneratorUtils.generateMD5(boob);
-        System.out.println(test);
+
+
         thisContext();
         popListRay popListRay = new popListRay();
     }
@@ -138,8 +143,19 @@ public class MainActivity extends Activity {
         dirSelector.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Call FC.Dialog()");
-                Dialog("Please input source destination", "Enter usb mnt point", "true");
+                //System.out.println("Call FC.Dialog()");
+                //Dialog("Please input source destination", "Enter usb mnt point", "true");
+
+                sourceDir = (EditText) findViewById(R.id.sourceDir);
+                destDir = (EditText) findViewById(R.id.destDir);
+
+                MntDir = sourceDir.getText().toString();
+                filePath = destDir.getText().toString();
+
+                TrgtDir.setText("Source Directory: " + MntDir);
+
+
+
                 imagingBtn.setEnabled(true);
                 copyKill.setEnabled(true);
             }
@@ -151,33 +167,9 @@ public class MainActivity extends Activity {
         imagingBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("from = " + MntDir);
-                System.out.println("to = " + filePath);
-                // operations to be performed on a background thread
-                pBar = (ProgressBar)findViewById(R.id.progressBar);
-                pBar.setVisibility(View.VISIBLE);
-
-                    try {
-                        System.out.println("let it begin "+ MntDir);
-                        long startTime = System.nanoTime();
-                        //###
-                        new copyFile().execute(MntDir);
-                        //###
-                        long endTime = System.nanoTime();
-
-                        long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
-                        System.out.println("Copy time: "+duration);
-                        running = false;
-
-                    }
-                    catch (Exception e)
-                        {
-                        System.out.println("Exception");
-                        running = false;
-                        }
-               pBar.setVisibility(View.INVISIBLE);
-
-            }
+                Image Image = new Image();
+                Image.main();
+                }
         });
 
         copyKill    = (Button) findViewById(R.id.copyKillSwitch);
@@ -235,6 +227,7 @@ public class MainActivity extends Activity {
                 AOL.setAdapter(LA);
                 //debugging
                 System.out.println("break here #######");
+
             }
         });
 
@@ -247,7 +240,7 @@ public class MainActivity extends Activity {
                 inputTxt = (EditText) findViewById(R.id.editText);
                 type = inputTxt.getText().toString();
                 System.out.println("text box = "+ type);
-                if (type != null||type==" ") {
+                if (type != null||type !=" ") {
                     Filter filter = new Filter();
                     JpgFiles = filter.finder(MntDir, type);
 

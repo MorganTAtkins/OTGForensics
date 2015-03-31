@@ -17,7 +17,7 @@ public class alertBox extends MainActivity {
 
     public String Attention(String Title, String Message, String txtNeed) {
         // creates alertDialog box based on the main activity context
-        AlertDialog.Builder alertBox1 = new AlertDialog.Builder(getParent());
+        AlertDialog.Builder alertBox1 = new AlertDialog.Builder(thisContext());
         String type= "1";
         // Setting Dialog Title
         alertBox1.setTitle(Title);

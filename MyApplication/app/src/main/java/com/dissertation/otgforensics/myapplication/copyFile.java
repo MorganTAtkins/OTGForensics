@@ -23,10 +23,11 @@ import java.net.URL;
 
 
 public class copyFile extends AsyncTask<String, String, String> {
-
+    public static long startTime = System.nanoTime();
 
     protected String doInBackground(String... strings) {
         Looper.prepare();
+
         //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
         //FindMntDrive mnt = new FindMntDrive();
@@ -125,7 +126,7 @@ public class copyFile extends AsyncTask<String, String, String> {
                 copyFileUsingStream(new File(source, children[i]), new File(DestinationFile, children[i]), sourceFilename);
             }
         } else {
-            // make sure the directory we plan to store the recording in exists
+            // make sure the directory we plan to store the data in exists
             File directory = dest.getParentFile();
             if (directory != null && !directory.exists() && !directory.mkdirs()) {
                 throw new IOException("Cannot create dir " + directory.getAbsolutePath());
@@ -157,7 +158,7 @@ public class copyFile extends AsyncTask<String, String, String> {
                     try {
 
                         files2CSV csvout = new files2CSV();
-                        System.out.println("CSV OUT CALLED");
+                        System.out.println("CSV OUT - CALLED");
                         String md5HashS = HashGeneratorUtils.generateMD5(source);
                         String md5HashD = HashGeneratorUtils.generateMD5(dest);
                         csvout.generateCsvFile(source.toString(),sourceFilename,md5HashD);
@@ -170,6 +171,7 @@ public class copyFile extends AsyncTask<String, String, String> {
                         }
                         System.out.println("md5 hashS " + md5HashS);
                         System.out.println("md5 hashD " + md5HashD);
+                        System.out.println("Time taken by Stream Copy = " + (System.nanoTime() - startTime));
 
                     } catch (HashGenerationException ex) {
                         ex.printStackTrace();
